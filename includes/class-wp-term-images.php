@@ -46,11 +46,6 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 	 */
 	public function __construct( $file = '' ) {
 
-		// Ajax actions
-		add_action( 'wp_ajax_assign_wp_term_images_media', array( $this, 'ajax_assign_media'     ) );
-		add_action( 'wp_ajax_remove_wp_term_images',       array( $this, 'action_remove_avatars' ) );
-		add_action( 'admin_action_remove-wp-term-images',  array( $this, 'action_remove_avatars' ) );
-
 		// Setup the labels
 		$this->labels = array(
 			'singular'    => esc_html__( 'Image',  'wp-term-images' ),
@@ -60,79 +55,6 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 
 		// Call the parent and pass the file
 		parent::__construct( $file );
-	}
-
-	/**
-	 * Runs when a user clicks the Remove button for the image
-	 *
-	 * @since 0.1.0
-	 */
-	public function ajax_action_remove_images() {
-
-		// Bail if not our request
-		if ( empty( $_GET['user_id'] ) || empty( $_GET['_wpnonce'] ) ) {
-			return;
-		}
-
-		// Bail if nonce verification fails
-		if ( ! wp_verify_nonce( $_GET['_wpnonce'], 'remove_wp_term_images_nonce' ) ) {
-			return;
-		}
-
-		// Cast values
-		$user_id = (int) $_GET['user_id'];
-
-		// Bail if term cannot be edited
-		if ( ! current_user_can( 'edit_image', $user_id ) ) {
-			wp_die( esc_html__( 'You do not have permission to edit this term.', 'wp-term-images' ) );
-		}
-
-		// Delete the image
-		wp_term_images_delete_image( $user_id );
-
-		// Output the default image
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			echo get_term_image( $user_id, 90 );
-			die();
-		}
-	}
-
-	/**
-	 * AJAX callback for setting media ID as term image
-	 *
-	 * @since 0.1.0
-	 */
-	public function ajax_assign_media() {
-
-		// check required information and permissions
-		if ( empty( $_POST['term_id'] ) || empty( $_POST['media_id'] ) || empty( $_POST['_wpnonce'] ) ) {
-			die();
-		}
-
-		// Cast values
-		$media_id = (int) $_POST['media_id'];
-		$term_id  = (int) $_POST['term_id'];
-
-		// Bail if current user cannot proceed
-		if ( ! current_user_can( 'upload_images' ) || ! current_user_can( 'edit_image', $term_id ) ) {
-			die();
-		}
-
-		// Bail if nonce verification fails
-		if ( ! wp_verify_nonce( $_POST['_wpnonce'], 'assign_wp_term_images_nonce' ) ) {
-			die();
-		}
-
-		// Make sure media is an image
-		if ( wp_attachment_is_image( $media_id ) ) {
-			update_term_meta( $term_id, $this->meta_key, $media_id );
-		}
-
-		// Output the new image
-		if ( defined( 'DOING_AJAX' ) && DOING_AJAX ) {
-			echo wp_get_attachment_image( $media_id );
-			die();
-		}
 	}
 
 	/** Assets ****************************************************************/
@@ -196,6 +118,16 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 				display: inline-block;
 				border: 2px solid #eee;
 			}
+			#wp-term-images-photo {
+				height: 125px;
+				width: auto;
+				border: 2px solid #ccc;
+			}
+			img.wp-term-images-media {
+				height: 25px;
+				width: auto;
+				border: 2px solid #ccc;
+			}
 		</style>
 
 		<?php
@@ -221,33 +153,55 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 	 */
 	protected function form_field( $term = '' ) {
 
+		$term_id = ! empty( $term->term_id )
+			? $term->term_id
+			: 0;
+
 		// Remove image URL
 		$remove_url = add_query_arg( array(
 			'action'   => 'remove-wp-term-images',
-			'term_id'  => $term->term_id,
+			'term_id'  => $term_id,
 			'_wpnonce' => false,
 		) );
 
 		// Get the meta value
-		$value = isset( $term->term_id )
-			? $this->get_meta( $term->term_id )
+		$value  = $this->get_meta( $term_id );
+		$hidden = empty( $value )
+			? ' style="display: none;"'
 			: ''; ?>
 
-		<div id="wp-term-images-photo">
-
-			<?php if ( ! empty( $value ) ) : ?>
-
-			<img src="<?php echo esc_url( wp_get_attachment_image_url( $value ) ); ?>" />
-
-			<?php endif; ?>
-
+		<div>
+			<img id="wp-term-images-photo" src="<?php echo esc_url( wp_get_attachment_image_url( $value ) ); ?>"<?php echo $hidden; ?> />
+			<input type="hidden" name="term-<?php echo esc_attr( $this->meta_key ); ?>" id="term-<?php echo esc_attr( $this->meta_key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		</div>
 
-		<button type="text" name="term-<?php echo esc_attr( $this->meta_key ); ?>" id="term-<?php echo esc_attr( $this->meta_key ); ?>" class="button wp-term-images-media">
+		<button class="button wp-term-images-media">
 			<?php esc_html_e( 'Choose Image', 'wp-term-images' ); ?>
 		</button>
 
-		<a href="<?php echo esc_url( $remove_url ); ?>" class="button item-delete submitdelete deletion" id="wp-term-images-remove"<?php if ( empty( $value ) ) echo ' style="display:none;"'; ?>>
+		<a href="<?php echo esc_url( $remove_url ); ?>" class="button wp-term-images-remove"<?php echo $hidden; ?>>
+			<?php esc_html_e( 'Remove', 'wp-user-avatars' ); ?>
+		</a>
+
+		<?php
+	}
+
+	/**
+	 * Output the form field
+	 *
+	 * @since 0.1.0
+	 *
+	 * @param  $term
+	 */
+	protected function quick_edit_form_field() {
+		?>
+
+		<input type="hidden" name="term-<?php echo esc_attr( $this->meta_key ); ?>" value="">
+		<button class="button wp-term-images-media quick">
+			<?php esc_html_e( 'Choose Image', 'wp-term-images' ); ?>
+		</button>
+		<img src="" class="wp-term-images-media quick" style="display: none;" />
+		<a href="" class="button wp-term-images-remove quick" style="display: none;">
 			<?php esc_html_e( 'Remove', 'wp-user-avatars' ); ?>
 		</a>
 

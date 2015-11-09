@@ -33,6 +33,9 @@ jQuery( document ).ready( function( $ ) {
 			multiple: false
 		} );
 
+		// What was clicked
+		var clicked = $( this );
+
 		// Picking an image
 		wp_term_images_modal.on( 'select', function () {
 
@@ -40,24 +43,22 @@ jQuery( document ).ready( function( $ ) {
 			term_image_lock( 'lock' );
 
 			// Get the image URL
-			var image_url = wp_term_images_modal.state().get( 'selection' ).first().toJSON().id;
+			var image = wp_term_images_modal.state().get( 'selection' ).first().toJSON();
 
-			// Post the new image
-			$.post( ajaxurl, {
-				action:   'assign_wp_term_images_media',
-				media_id: image_url,
-				term_id:  i10n_WPTermImages.term_id,
-				_wpnonce: i10n_WPTermImages.mediaNonce
-			}, function ( data ) {
-console.log( data );
-				// Update the UI
-				if ( '' !== data ) {
-					$( '#wp-term-images-photo' ).html( data );
-					$( '#wp-term-images-remove' ).show();
+			if ( '' !== image ) {
+				if ( ! clicked.hasClass( 'quick' ) ) {
+					$( '#term-image' ).val( image.id );
+					$( '#wp-term-images-photo' ).attr( 'src', image.url ).show();
+					$( '.wp-term-images-remove' ).show();
+				} else {
+					$( 'button', '.inline-edit-row' ).hide();
+					$( 'a.button', '.inline-edit-row' ).show();
+					$( ':input[name="term-image"]', '.inline-edit-row' ).val( image.id );
+					$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', image.url ).show();
 				}
+			}
 
-				term_image_lock( 'unlock' );
-			} );
+			term_image_lock( 'unlock' );
 		} );
 
 		// Open the modal
@@ -69,32 +70,20 @@ console.log( data );
 	 *
 	 * @param {object} event The event
 	 */
-	$( '#wp-term-images-remove' ).on( 'click', function ( event ) {
+	$( '.wp-term-images-remove' ).on( 'click', function ( event ) {
 		event.preventDefault();
 
-		// Already removing
-		if ( term_image_working ) {
-			return;
+		// Clear image metadata
+		if ( ! $( this ).hasClass( 'quick' ) ) {
+			$( '#term-image' ).val( 0 );
+			$( '#wp-term-images-photo' ).attr( 'src', '' ).hide();
+			$( '.wp-term-images-remove' ).hide();
+		} else {
+			$( ':input[name="term-image"]', '.inline-edit-row' ).val( '' );
+			$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', '' ).hide();
+			$( 'a.button', '.inline-edit-row' ).hide();
+			$( 'button', '.inline-edit-row' ).show();
 		}
-
-		// Prevent doubles
-		term_image_lock( 'lock' );
-
-		// Remove the URL
-		$.get( ajaxurl, {
-			action:   'remove_wp_term_images',
-			term_id:  i10n_WPTermImages.term_id,
-			_wpnonce: i10n_WPTermImages.deleteNonce
-		} ).done( function ( data ) {
-
-			// Update the UI
-			if ( '' !== data ) {
-				$( '#wp-term-images-photo' ).html( data );
-				$( '#wp-term-images-remove' ).hide();
-			}
-
-			term_image_lock( 'unlock' );
-		} );
 	} );
 
 	/**
@@ -112,10 +101,23 @@ console.log( data );
 		}
 	}
 
-    jQuery( '.editinline' ).on( 'click', function() {
-        var tag_id = jQuery( this ).parents( 'tr' ).attr( 'id' ),
-			image  = jQuery( 'td.image i', '#' + tag_id ).attr( 'data-image' );
+	/**
+	 * Quick edit interactions
+	 */
+    $( '.editinline' ).on( 'click', function() {
+        var tag_id = $( this ).parents( 'tr' ).attr( 'id' ),
+			image  = $( 'td.image img', '#' + tag_id ).attr( 'src' );
 
-        jQuery( ':input[name="term-image"]', '.inline-edit-row' ).val( image );
+		if ( typeof( image ) !== 'undefined' ) {
+			$( 'button', '.inline-edit-row' ).hide();
+			$( ':input[name="term-image"]', '.inline-edit-row' ).val( image );
+			$( 'a.button', '.inline-edit-row' ).show();
+			$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', image ).show();
+		} else {
+			$( 'a.button', '.inline-edit-row' ).hide();
+			$( ':input[name="term-image"]', '.inline-edit-row' ).val( '' );
+			$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', '' ).hide();
+			$( 'button', '.inline-edit-row' ).show();
+		}
     } );
 } );
