@@ -175,7 +175,7 @@ class WP_Term_Meta_UI {
 	/**
 	 * Add help tabs for this metadata
 	 *
-	 * @since 0.1.0
+	 * @since 0.1.2
 	 */
 	public function admin_head() { }
 
