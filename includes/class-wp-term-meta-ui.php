@@ -173,6 +173,13 @@ class WP_Term_Meta_UI {
 	public function help_tabs() { }
 
 	/**
+	 * Add help tabs for this metadata
+	 *
+	 * @since 0.1.0
+	 */
+	public function admin_head() { }
+
+	/**
 	 * Quick edit ajax updating
 	 *
 	 * @since 0.1.1
