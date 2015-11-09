@@ -70,7 +70,8 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 		wp_enqueue_media();
 
 		// Enqueue media handler; includes quick-edit
-		wp_enqueue_script( 'wp-term-images', $this->url . 'assets/js/term-image.js', array( 'jquery' ), $this->db_version, true );
+		wp_enqueue_style( 'wp-term-images',  $this->url . 'assets/css/term-image.css', array(),           $this->db_version       );
+		wp_enqueue_script( 'wp-term-images', $this->url . 'assets/js/term-image.js',   array( 'jquery' ), $this->db_version, true );
 
 		// Term ID
 		$term_id = ! empty( $_GET['tag_ID'] )
@@ -98,39 +99,6 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 			'title'   => __( 'Term Image', 'wp-term-images' ),
 			'content' => '<p>' . __( 'Terms can have unique images to help separate them from each other.', 'wp-term-images' ) . '</p>',
 		) );
-	}
-
-	/**
-	 * Align custom `image` column
-	 *
-	 * @since 0.1.0
-	 */
-	public function admin_head() {
-		?>
-
-		<style type="text/css">
-			.column-image {
-				width: 74px;
-			}
-			.column-image img {
-				height: 25px;
-				width: 25px;
-				display: inline-block;
-				border: 2px solid #eee;
-			}
-			#wp-term-images-photo {
-				height: 125px;
-				width: auto;
-				border: 2px solid #ccc;
-			}
-			img.wp-term-images-media {
-				height: 25px;
-				width: auto;
-				border: 2px solid #ccc;
-			}
-		</style>
-
-		<?php
 	}
 
 	/**
@@ -171,7 +139,7 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 			: ''; ?>
 
 		<div>
-			<img id="wp-term-images-photo" src="<?php echo esc_url( wp_get_attachment_image_url( $value ) ); ?>"<?php echo $hidden; ?> />
+			<img id="wp-term-images-photo" src="<?php echo esc_url( wp_get_attachment_image_url( $value, 'full' ) ); ?>"<?php echo $hidden; ?> />
 			<input type="hidden" name="term-<?php echo esc_attr( $this->meta_key ); ?>" id="term-<?php echo esc_attr( $this->meta_key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		</div>
 

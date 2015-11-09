@@ -1,0 +1,19 @@
+.column-image {
+	width: 74px;
+}
+img.wp-term-images-media,
+.column-image img {
+	max-height: 25px;
+	max-width: 25px;
+	height: auto;
+	width: auto;
+	display: inline-block;
+	border: 2px solid #eee;
+}
+#wp-term-images-photo {
+	max-height: 125px;
+	max-width: 125px;
+	height: auto;
+	width: auto;
+	border: 2px solid #ccc;
+}

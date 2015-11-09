@@ -1,6 +1,6 @@
 {
   "name": "stuttter/wp-term-images",
-  "description": "Pretty images for categories, tags, and other taxonomy terms",
+  "description": "Images for categories, tags, and other taxonomy terms",
   "homepage": "https://github.com/stuttter/wp-term-images",
   "type": "wordpress-plugin",
   "require": {
