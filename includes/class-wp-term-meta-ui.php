@@ -82,6 +82,11 @@ class WP_Term_Meta_UI {
 	public $basename = '';
 
 	/**
+	 * @var array Which taxonomies are being targeted?
+	 */
+	public $taxonomies = array();
+
+	/**
 	 * @var bool Whether to use fancy UI
 	 */
 	public $fancy = false;
@@ -104,21 +109,22 @@ class WP_Term_Meta_UI {
 	public function __construct( $file = '' ) {
 
 		// Setup plugin
-		$this->file     = $file;
-		$this->url      = plugin_dir_url( $this->file );
-		$this->path     = plugin_dir_path( $this->file );
-		$this->basename = plugin_basename( $this->file );
-		$this->fancy    = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
+		$this->file       = $file;
+		$this->url        = plugin_dir_url( $this->file );
+		$this->path       = plugin_dir_path( $this->file );
+		$this->basename   = plugin_basename( $this->file );
+		$this->taxonomies = $this->get_taxonomies();
+		$this->fancy      = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
+
+		// Register Meta
+		$this->register_meta();
 
 		// Queries
 		add_action( 'create_term', array( $this, 'save_meta' ), 10, 2 );
 		add_action( 'edit_term',   array( $this, 'save_meta' ), 10, 2 );
 
-		// Get visible taxonomies
-		$taxonomies = $this->get_taxonomies();
-
 		// Always hook these in, for ajax actions
-		foreach ( $taxonomies as $value ) {
+		foreach ( $this->taxonomies as $value ) {
 
 			// Has column?
 			if ( true === $this->has_column ) {
@@ -142,6 +148,56 @@ class WP_Term_Meta_UI {
 			add_action( 'admin_init',         array( $this, 'admin_init' ) );
 			add_action( 'load-edit-tags.php', array( $this, 'edit_tags'  ) );
 		}
+	}
+
+	/**
+	 * Register term meta, key, and callbacks
+	 *
+	 * @since 0.1.5
+	 */
+	public function register_meta() {
+		register_meta(
+			'term',
+			$this->meta_key,
+			array( $this, 'sanitize_callback' ),
+			array( $this, 'auth_callback'     )
+		);
+	}
+
+	/**
+	 * Stub method for sanitizing meta data
+	 *
+	 * @since 0.1.5
+	 *
+	 * @param   mixed $data
+	 * @return  mixed
+	 */
+	public function sanitize_callback( $data = '' ) {
+		return $data;
+	}
+
+	/**
+	 * Stub method for authorizing the saving of meta data
+	 *
+	 * @since 0.1.5
+	 *
+	 * @param  bool    $allowed
+	 * @param  string  $meta_key
+	 * @param  int     $post_id
+	 * @param  int     $user_id
+	 * @param  string  $cap
+	 * @param  array   $caps
+	 *
+	 * @return boolean
+	 */
+	public function auth_callback( $allowed = false, $meta_key = '', $post_id = 0, $user_id = 0, $cap = '', $caps = array() ) {
+
+		// Bail if incorrect meta key
+		if ( $meta_key !== $this->meta_key ) {
+			return $allowed;
+		}
+
+		return $allowed;
 	}
 
 	/**
@@ -423,7 +479,7 @@ class WP_Term_Meta_UI {
 	public function quick_edit_meta( $column_name = '', $screen = '', $name = '' ) {
 
 		// Bail if not the meta_key column on the `edit-tags` screen for a visible taxonomy
-		if ( ( $this->meta_key !== $column_name ) || ( 'edit-tags' !== $screen ) || ! in_array( $name, $this->get_taxonomies() ) ) {
+		if ( ( $this->meta_key !== $column_name ) || ( 'edit-tags' !== $screen ) || ! in_array( $name, $this->taxonomies ) ) {
 			return false;
 		} ?>
 
