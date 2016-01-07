@@ -143,9 +143,9 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 			<input type="hidden" name="term-<?php echo esc_attr( $this->meta_key ); ?>" id="term-<?php echo esc_attr( $this->meta_key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		</div>
 
-		<button class="button wp-term-images-media">
+		<a class="button-secondary wp-term-images-media">
 			<?php esc_html_e( 'Choose Image', 'wp-term-images' ); ?>
-		</button>
+		</a>
 
 		<a href="<?php echo esc_url( $remove_url ); ?>" class="button wp-term-images-remove"<?php echo $hidden; ?>>
 			<?php esc_html_e( 'Remove', 'wp-user-avatars' ); ?>
