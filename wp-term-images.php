@@ -20,11 +20,6 @@ defined( 'ABSPATH' ) || exit;
  */
 function _wp_term_images() {
 
-	// Bail if no term meta
-	if ( ! function_exists( 'add_term_meta' ) ) {
-		return;
-	}
-
 	// Setup the main file
 	$file = __FILE__;
 
