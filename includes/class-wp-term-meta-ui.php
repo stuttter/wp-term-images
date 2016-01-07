@@ -9,7 +9,7 @@
  * and handle the sanitization & saving of values.
  *
  * @since 0.1.1
- * @version 0.1.4
+ * @version 0.1.5
  *
  * @package Plugins/Terms/Metadata/UI
  */
@@ -123,6 +123,10 @@ class WP_Term_Meta_UI {
 		add_action( 'create_term', array( $this, 'save_meta' ), 10, 2 );
 		add_action( 'edit_term',   array( $this, 'save_meta' ), 10, 2 );
 
+		// Term meta orderby
+		add_filter( 'terms_clauses',     array( $this, 'terms_clauses'     ), 10, 3 );
+		add_filter( 'get_terms_orderby', array( $this, 'get_terms_orderby' ), 10, 1 );
+
 		// Always hook these in, for ajax actions
 		foreach ( $this->taxonomies as $value ) {
 
@@ -225,6 +229,82 @@ class WP_Term_Meta_UI {
 
 		// Quick edit
 		add_action( 'quick_edit_custom_box', array( $this, 'quick_edit_meta' ), 10, 3 );
+	}
+
+	/** Get Terms *************************************************************/
+
+	/**
+	 * Filter `get_terms_args` and tweak for meta_query orderby's
+	 *
+	 * @since 0.1.5
+	 *
+	 * @param  string  $orderby
+	 * @param  array   $args
+	 * @param  array   $taxonomies
+	 */
+	public function get_terms_orderby( $orderby = '' ) {
+
+		// Ordering by meta key
+		if ( ! empty( $_REQUEST['orderby'] ) && ( $this->meta_key === $_REQUEST['orderby'] ) ) {
+			$orderby = 'meta_value';
+		}
+
+		return $orderby;
+	}
+
+	/**
+	 * Filter get_terms() and maybe add `meta_query`
+	 *
+	 * @since 0.1.5
+	 *
+	 * @param  array  $clauses
+	 * @param  array  $taxonomies
+	 * @param  array  $args
+	 */
+	public function terms_clauses( $clauses = array(), $taxonomies = array(), $args = array() ) {
+		global $wpdb;
+
+		// Default allowed keys & primary key
+		$allowed_keys = array( $this->meta_key );
+
+		// Set allowed keys
+		$allowed_keys[] = 'meta_value';
+		$allowed_keys[] = 'meta_value_num';
+
+		// Tweak orderby
+		$orderby = isset( $args[ 'orderby' ] )
+			? $args[ 'orderby' ]
+			: '';
+
+		// Bail if no orderby or allowed_keys
+		if ( ! in_array( $orderby, $allowed_keys, true ) ) {
+			return $clauses;
+		}
+
+		// Join term meta data
+		$clauses['join'] .= " INNER JOIN {$wpdb->termmeta} AS tm ON t.term_id = tm.term_id";
+
+		// Maybe order by term meta
+		switch ( $args[ 'orderby' ] ) {
+			case $this->meta_key :
+			case 'meta_value' :
+				if ( ! empty( $this->key_type ) ) {
+					$clauses['orderby'] = "ORDER BY CAST(tm.meta_value AS tm)";
+				} else {
+					$clauses['orderby'] = "ORDER BY tm.meta_value";
+				}
+				$clauses['fields'] .= ', tm.*';
+				$clauses['where']  .= " AND tm.meta_key = '{$this->meta_key}'";
+				break;
+			case 'meta_value_num':
+				$clauses['orderby'] = "ORDER BY tm.meta_value+0";
+				$clauses['fields'] .= ', tm.*';
+				$clauses['where']  .= " AND tm.meta_key = '{$this->meta_key}'";
+				break;
+		}
+
+		// Return maybe modified clauses
+		return $clauses;
 	}
 
 	/** Assets ****************************************************************/
