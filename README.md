@@ -14,7 +14,9 @@ WP Term Images allows users to assign images to any visible category, tag, or ta
 
 ### Does this plugin depend on any others?
 
-Yes. Please install the WP Term Meta plugin
+Not since WordPress 4.4.
+
+Install the [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Metadata, for taxonomy terms.") plugin if you're on an earlier version.
 
 ### Does this create new database tables?
 
