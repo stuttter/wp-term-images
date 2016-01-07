@@ -51,7 +51,7 @@ jQuery( document ).ready( function( $ ) {
 					$( '#wp-term-images-photo' ).attr( 'src', image.url ).show();
 					$( '.wp-term-images-remove' ).show();
 				} else {
-					$( 'button', '.inline-edit-row' ).hide();
+					$( 'button.wp-term-images-media' ).hide();
 					$( 'a.button', '.inline-edit-row' ).show();
 					$( ':input[name="term-image"]', '.inline-edit-row' ).val( image.id );
 					$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', image.url ).show();
@@ -82,7 +82,7 @@ jQuery( document ).ready( function( $ ) {
 			$( ':input[name="term-image"]', '.inline-edit-row' ).val( '' );
 			$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', '' ).hide();
 			$( 'a.button', '.inline-edit-row' ).hide();
-			$( 'button', '.inline-edit-row' ).show();
+			$( 'button.wp-term-images-media' ).show();
 		}
 	} );
 
@@ -109,7 +109,7 @@ jQuery( document ).ready( function( $ ) {
 			image  = $( 'td.image img', '#' + tag_id ).attr( 'src' );
 
 		if ( typeof( image ) !== 'undefined' ) {
-			$( 'button', '.inline-edit-row' ).hide();
+			$( 'button.wp-term-images-media' ).hide();
 			$( ':input[name="term-image"]', '.inline-edit-row' ).val( image );
 			$( 'a.button', '.inline-edit-row' ).show();
 			$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', image ).show();
@@ -117,7 +117,7 @@ jQuery( document ).ready( function( $ ) {
 			$( 'a.button', '.inline-edit-row' ).hide();
 			$( ':input[name="term-image"]', '.inline-edit-row' ).val( '' );
 			$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', '' ).hide();
-			$( 'button', '.inline-edit-row' ).show();
+			$( 'button.wp-term-images-media' ).show();
 		}
     } );
 } );
