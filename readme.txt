@@ -24,7 +24,6 @@ This plugin requires [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ 
 * [WP Pretty Filters](https://wordpress.org/plugins/wp-pretty-filters/ "Makes post filters better match what's already in Media & Attachments.")
 * [WP Event Calendar](https://wordpress.org/plugins/wp-event-calendar/ "The best way to manage events in WordPress.")
 * [WP Media Categories](https://wordpress.org/plugins/wp-media-categories/ "Add categories to media & attachments.")
-* [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Metadata, for taxonomy terms.")
 * [WP Term Order](https://wordpress.org/plugins/wp-term-order/ "Sort taxonomy terms, your way.")
 * [WP Term Authors](https://wordpress.org/plugins/wp-term-authors/ "Authors for categories, tags, and other taxonomy terms.")
 * [WP Term Colors](https://wordpress.org/plugins/wp-term-colors/ "Pretty colors for categories, tags, and other taxonomy terms.")
@@ -80,6 +79,10 @@ The WordPress support forums: https://wordpress.org/support/plugin/wp-term-image
 http://github.com/stuttter/wp-term-images/
 
 == Changelog ==
+
+= 0.2.0 =
+* Fix new-term form action hi-jacking
+* Update WP Term Meta UI dependency to 0.1.4
 
 = 0.1.0 =
 * Initial release

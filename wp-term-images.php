@@ -5,7 +5,7 @@
  * Plugin URI:  https://wordpress.org/plugins/wp-term-images/
  * Author:      John James Jacoby
  * Author URI:  https://profiles.wordpress.org/johnjamesjacoby/
- * Version:     0.1.4
+ * Version:     0.2.0
  * Description: Pretty images for categories, tags, and other taxonomy terms
  * License:     GPL v2 or later
  */
