@@ -9,7 +9,7 @@
  * and handle the sanitization & saving of values.
  *
  * @since 0.1.1
- * @version 0.1.5
+ * @version 0.1.6
  *
  * @package Plugins/Terms/Metadata/UI
  */
@@ -115,6 +115,11 @@ class WP_Term_Meta_UI {
 		$this->basename   = plugin_basename( $this->file );
 		$this->taxonomies = $this->get_taxonomies();
 		$this->fancy      = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
+
+		// Maybe build db version key
+		if ( empty( $this->db_version_key ) ) {
+			$this->db_version_key = "wpdb_term_{$this->meta_key}_version";
+		}
 
 		// Register Meta
 		$this->register_meta();
@@ -253,7 +258,7 @@ class WP_Term_Meta_UI {
 	}
 
 	/**
-	 * Filter get_terms() and maybe add `meta_query`
+	 * Filter get_terms() and maybe order by meta data
 	 *
 	 * @since 0.1.5
 	 *
