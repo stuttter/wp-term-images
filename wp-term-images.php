@@ -5,9 +5,12 @@
  * Plugin URI:  https://wordpress.org/plugins/wp-term-images/
  * Author:      John James Jacoby
  * Author URI:  https://profiles.wordpress.org/johnjamesjacoby/
- * Version:     0.2.0
+ * License:     GPLv2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: Pretty images for categories, tags, and other taxonomy terms
- * License:     GPL v2 or later
+ * Version:     0.2.0
+ * Text Domain: wp-term-images
+ * Domain Path: /assets/lang/
  */
 
 // Exit if accessed directly
@@ -23,7 +26,7 @@ function _wp_term_images() {
 	// Setup the main file
 	$plugin_path = plugin_dir_path( __FILE__ );
 
-	// Include the main class
+	// Classes
 	require_once $plugin_path . '/includes/class-wp-term-meta-ui.php';
 	require_once $plugin_path . '/includes/class-wp-term-images.php';
 }
