@@ -31,7 +31,14 @@ No. All of WordPress's core database tables remain untouched.
 With WordPress's `get_term_meta()` function
 
 ```
-$image = get_term_meta( 7, 'image', true );
+// image id is stored as term meta
+$image_id = get_term_meta( 7, 'image', true );
+
+// image data stored in array, second argument is which image size to retrieve
+$image_data = wp_get_attachment_image_src( $image_id, 'full' );
+
+// image url is the first item in the array (aka 0)
+$image = $image_data[0];
 
 if ( ! empty( $image ) ) {
 	echo '<img src="' . esc_url( $image ) . '" />';
