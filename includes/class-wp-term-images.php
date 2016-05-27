@@ -48,6 +48,9 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 			'description' => esc_html__( 'Assign terms a custom image to visually separate them from each-other.', 'wp-term-images' )
 		);
 
+		// Translations
+		load_plugin_textdomain( 'wp-term-images' );
+
 		// Call the parent and pass the file
 		parent::__construct( $file );
 	}
