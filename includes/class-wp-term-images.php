@@ -22,12 +22,12 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 	/**
 	 * @var string Plugin version
 	 */
-	public $version = '0.2.0';
+	public $version = '0.2.1';
 
 	/**
 	 * @var string Database version
 	 */
-	public $db_version = 201601070001;
+	public $db_version = 201605270001;
 
 	/**
 	 * @var string Metadata key
@@ -104,7 +104,29 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 	 * @param string $meta
 	 */
 	protected function format_output( $meta = '' ) {
+
+		// Filter image attributes and add the attachment ID
+		add_filter( 'wp_get_attachment_image_attributes', array( $this, 'attachment_id_attr' ), 10, 2 );
+
+		// Output the image attachment
 		echo wp_get_attachment_image( $meta );
+
+		// Remove our filter
+		remove_filter( 'wp_get_attachment_image_attributes', array( $this, 'attachment_id_attr' ), 10, 2 );
+	}
+
+	/**
+	 * Add attachment ID as data attribute, used by Quick Edit
+	 *
+	 * @since 0.1.3
+	 *
+	 * @param array $attr
+	 * @param int   $attachment
+	 * @param int   $size
+	 */
+	public static function attachment_id_attr( $attr = array(), $attachment = 0 ) {
+		$attr['data-attachment-id'] = $attachment->ID;
+		return $attr;
 	}
 
 	/**
@@ -135,7 +157,7 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 
 		<div>
 			<img id="wp-term-images-photo" src="<?php echo esc_url( wp_get_attachment_image_url( $value, 'full' ) ); ?>"<?php echo $hidden; ?> />
-			<input type="hidden" name="term-<?php echo esc_attr( $this->meta_key ); ?>" id="term-<?php echo esc_attr( $this->meta_key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
+			<input type="text" style="display: none;" name="term-<?php echo esc_attr( $this->meta_key ); ?>" id="term-<?php echo esc_attr( $this->meta_key ); ?>" value="<?php echo esc_attr( $value ); ?>" />
 		</div>
 
 		<a class="button-secondary wp-term-images-media">
