@@ -158,10 +158,19 @@ class WP_Term_Meta_UI {
 
 		// Only blog admin screens
 		if ( is_blog_admin() || doing_action( 'wp_ajax_inline_save_tax' ) ) {
-			add_action( 'admin_init',         array( $this, 'admin_init'     ) );
-			add_action( 'load-edit-tags.php', array( $this, 'edit_tags_page' ) );
-			add_action( 'load-term.php',      array( $this, 'term_page'      ) );
+
+			// Every admin page
+			add_action( 'admin_init', array( $this, 'admin_init' ) );
+
+			// Only add if taxonomy is supported
+			if ( ! empty( $_REQUEST['taxonomy'] ) && in_array( $_REQUEST['taxonomy'], $this->taxonomies, true ) ) {
+				add_action( 'load-edit-tags.php', array( $this, 'edit_tags_page' ) );
+				add_action( 'load-term.php',      array( $this, 'term_page'      ) );
+			}
 		}
+
+		// Pass ths object into an action
+		do_action( "wp_term_meta_{$this->meta_key}_init", $this );
 	}
 
 	/**
@@ -231,19 +240,10 @@ class WP_Term_Meta_UI {
 	 * @since 0.1.0
 	 */
 	public function edit_tags_page() {
-
-		// Bail if taxonomy does not include colors
-		if ( empty( $_REQUEST['taxonomy'] ) || ! in_array( $_REQUEST['taxonomy'], $this->taxonomies, true ) ) {
-			return;
-		}
-
-		// Enqueue javascript
 		add_action( 'admin_head-edit-tags.php',          array( $this, 'help_tabs'       ) );
 		add_action( 'admin_head-edit-tags.php',          array( $this, 'admin_head'      ) );
 		add_action( 'admin_print_scripts-edit-tags.php', array( $this, 'enqueue_scripts' ) );
-
-		// Quick edit
-		add_action( 'quick_edit_custom_box', array( $this, 'quick_edit_meta' ), 10, 3 );
+		add_action( 'quick_edit_custom_box',             array( $this, 'quick_edit_meta' ), 10, 3 );
 	}
 
 	/**
@@ -252,14 +252,6 @@ class WP_Term_Meta_UI {
 	 * @since 0.1.9
 	 */
 	public function term_page() {
-
-		// Bail if taxonomy does not include colors
-		if ( empty( $_REQUEST['taxonomy'] ) || ! in_array( $_REQUEST['taxonomy'], $this->taxonomies, true ) ) {
-			return;
-		}
-
-		// Enqueue javascript
-		add_action( 'admin_head-term.php',          array( $this, 'help_tabs'       ) );
 		add_action( 'admin_head-term.php',          array( $this, 'admin_head'      ) );
 		add_action( 'admin_print_scripts-term.php', array( $this, 'enqueue_scripts' ) );
 	}
