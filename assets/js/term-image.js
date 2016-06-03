@@ -22,6 +22,15 @@ jQuery( document ).ready( function( $ ) {
 	$( '#addtag' ).on( 'click', '.wp-term-images-media', function ( event ) {
 		wp_term_images_show_media_modal( this, event );
 	} );
+	
+	/**
+	 * Invoke the media modal
+	 *
+	 * @param {object} event The event
+	 */
+	$( '#edittag' ).on( 'click', '.wp-term-images-media', function ( event ) {
+		wp_term_images_show_media_modal( this, event );
+	} );
 
 	/**
 	 * Remove image
