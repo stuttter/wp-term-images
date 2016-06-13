@@ -10,7 +10,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {object} event The event
 	 */
-	$( '#the-list' ).on( 'click', '.wp-term-images-media', function ( event ) {
+	$( '#wpbody-content' ).on( 'click', '.wp-term-images-media', function ( event ) {
 		wp_term_images_show_media_modal( this, event );
 	} );
 
