@@ -73,33 +73,35 @@ jQuery( document ).ready( function( $ ) {
 	function wp_term_images_show_media_modal( element, event ) {
 		event.preventDefault();
 
-		// First time modal
-		wp_term_images_modal = wp.media.frames.wp_term_images_modal = wp.media( {
-			title:    i10n_WPTermImages.insertMediaTitle,
-			button:   { text: i10n_WPTermImages.insertIntoPost },
-			library:  { type: 'image' },
-			multiple: false
-		} );
+		// Initialize the modal the first time.
+		if ( ! wp_term_images_modal ) {
+			wp_term_images_modal = wp.media.frames.wp_term_images_modal || wp.media( {
+				title:    i10n_WPTermImages.insertMediaTitle,
+				button:   { text: i10n_WPTermImages.insertIntoPost },
+				library:  { type: 'image' },
+				multiple: false
+			} );
 
-		// Picking an image
-		wp_term_images_modal.on( 'select', function () {
+			// Picking an image
+			wp_term_images_modal.on( 'select', function () {
 
-			// Get the image URL
-			var image = wp_term_images_modal.state().get( 'selection' ).first().toJSON();
+				// Get the image URL
+				var image = wp_term_images_modal.state().get( 'selection' ).first().toJSON();
 
-			if ( '' !== image ) {
-				if ( ! $( element ).hasClass( 'quick' ) ) {
-					$( '#term-image' ).val( image.id );
-					$( '#wp-term-images-photo' ).attr( 'src', image.url ).show();
-					$( '.wp-term-images-remove' ).show();
-				} else {
-					$( 'button.wp-term-images-media' ).hide();
-					$( 'a.button', '.inline-edit-row' ).show();
-					$( ':input[name="term-image"]', '.inline-edit-row' ).val( image.id );
-					$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', image.url ).show();
+				if ( '' !== image ) {
+					if ( ! $( element ).hasClass( 'quick' ) ) {
+						$( '#term-image' ).val( image.id );
+						$( '#wp-term-images-photo' ).attr( 'src', image.url ).show();
+						$( '.wp-term-images-remove' ).show();
+					} else {
+						$( 'button.wp-term-images-media' ).hide();
+						$( 'a.button', '.inline-edit-row' ).show();
+						$( ':input[name="term-image"]', '.inline-edit-row' ).val( image.id );
+						$( 'img.wp-term-images-media', '.inline-edit-row' ).attr( 'src', image.url ).show();
+					}
 				}
-			}
-		} );
+			} );
+		}
 
 		// Open the modal
 		wp_term_images_modal.open();
