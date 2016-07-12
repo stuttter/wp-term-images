@@ -19,7 +19,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {object} event The event
 	 */
-	$( '#addtag' ).on( 'click', '.wp-term-images-media', function ( event ) {
+	$( '#addtag, #edittag' ).on( 'click', '.wp-term-images-media', function ( event ) {
 		wp_term_images_show_media_modal( this, event );
 	} );
 
@@ -37,7 +37,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {object} event The event
 	 */
-	$( '#addtag' ).on( 'click', '.wp-term-images-remove', function ( event ) {
+	$( '#addtag, #edittag' ).on( 'click', '.wp-term-images-remove', function ( event ) {
 		wp_term_images_reset( this, event );
 	} );
 
