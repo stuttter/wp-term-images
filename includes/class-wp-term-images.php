@@ -27,7 +27,7 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 	/**
 	 * @var string Database version
 	 */
-	public $db_version = 201607130001;
+	public $db_version = 201607130002;
 
 	/**
 	 * @var string Metadata key

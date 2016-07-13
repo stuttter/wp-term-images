@@ -26,19 +26,16 @@ jQuery( document ).ready( function( $ ) {
 	/**
 	 * Reset the form on submit.
 	 *
-	 * Since the form is never *actually* submitted (but instead serialized on #submit
-	 * being clicked), we'll have to do the same.
+	 * Since the form is never *actually* submitted (but instead serialized on
+	 * #submit being clicked), we'll have to do the same.
 	 *
 	 * @see wp-admin/js/tags.js
+	 * @link https://core.trac.wordpress.org/ticket/36956
 	 *
 	 * @param {object} event The event.
 	 */
-	$('#submit').on( 'click', function ( event ) {
-		var self = $( this );
-
-		if ( 'addtag' === self.parents( 'form' ).attr( 'id' ) ) {
-			wp_term_images_reset( this, event );
-		}
+	$( document ).on( 'term-added', function ( event ) {
+		wp_term_images_reset( $( '#addtag #submit' ), event );
 	} );
 
 	/**
