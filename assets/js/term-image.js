@@ -10,25 +10,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {object} event The event
 	 */
-	$( '#the-list' ).on( 'click', '.wp-term-images-media', function ( event ) {
-		wp_term_images_show_media_modal( this, event );
-	} );
-
-	/**
-	 * Invoke the media modal
-	 *
-	 * @param {object} event The event
-	 */
-	$( '#addtag' ).on( 'click', '.wp-term-images-media', function ( event ) {
-		wp_term_images_show_media_modal( this, event );
-	} );
-
-	/**
-	 * Invoke the media modal
-	 *
-	 * @param {object} event The event
-	 */
-	$( '#edittag' ).on( 'click', '.wp-term-images-media', function ( event ) {
+	$( '#addtag, #edittag, #the-list' ).on( 'click', '.wp-term-images-media', function ( event ) {
 		wp_term_images_show_media_modal( this, event );
 	} );
 
@@ -37,16 +19,7 @@ jQuery( document ).ready( function( $ ) {
 	 *
 	 * @param {object} event The event
 	 */
-	$( '.wp-term-images-remove' ).on( 'click', function ( event ) {
-		wp_term_images_reset( this, event );
-	} );
-
-	/**
-	 * Remove image
-	 *
-	 * @param {object} event The event
-	 */
-	$( '#addtag' ).on( 'click', '.wp-term-images-remove', function ( event ) {
+	$( '#addtag, #edittag, #the-list' ).on( 'click', '.wp-term-images-remove', function ( event ) {
 		wp_term_images_reset( this, event );
 	} );
 
