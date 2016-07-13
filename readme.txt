@@ -62,7 +62,7 @@ No. There are no new database tables with this plugin.
 
 No. All of WordPress's core database tables remain untouched.
 
-= How do I get the image for a term?
+= How do I get the image for a term? =
 
 With WordPress's `get_term_meta()` function
 
