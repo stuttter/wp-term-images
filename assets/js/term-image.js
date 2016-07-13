@@ -24,6 +24,24 @@ jQuery( document ).ready( function( $ ) {
 	} );
 
 	/**
+	 * Reset the form on submit.
+	 *
+	 * Since the form is never *actually* submitted (but instead serialized on #submit
+	 * being clicked), we'll have to do the same.
+	 *
+	 * @see wp-admin/js/tags.js
+	 *
+	 * @param {object} event The event.
+	 */
+	$('#submit').on( 'click', function ( event ) {
+		var self = $( this );
+
+		if ( 'addtag' === self.parents( 'form' ).attr( 'id' ) ) {
+			wp_term_images_reset( this, event );
+		}
+	} );
+
+	/**
 	 * Quick edit interactions
 	 */
     $( '#the-list' ).on( 'click', 'a.editinline', function() {
