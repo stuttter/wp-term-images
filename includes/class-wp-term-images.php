@@ -78,8 +78,8 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 
 		// Localize
 		wp_localize_script( 'wp-term-images', 'i10n_WPTermImages', array(
-			'insertMediaTitle' => esc_html__( 'Choose an Image', 'wp-user-avatars' ),
-			'insertIntoPost'   => esc_html__( 'Set as image',    'wp-user-avatars' ),
+			'insertMediaTitle' => esc_html__( 'Choose an Image', 'wp-term-images' ),
+			'insertIntoPost'   => esc_html__( 'Set as image',    'wp-term-images' ),
 			'deleteNonce'      => wp_create_nonce( 'remove_wp_term_images_nonce' ),
 			'mediaNonce'       => wp_create_nonce( 'assign_wp_term_images_nonce' ),
 			'term_id'          => $term_id,
@@ -168,7 +168,7 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 		</a>
 
 		<a href="<?php echo esc_url( $remove_url ); ?>" class="button wp-term-images-remove"<?php echo $hidden; ?>>
-			<?php esc_html_e( 'Remove', 'wp-user-avatars' ); ?>
+			<?php esc_html_e( 'Remove', 'wp-term-images' ); ?>
 		</a>
 
 		<?php
@@ -190,7 +190,7 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 		</button>
 		<img src="" class="wp-term-images-media quick" style="display: none;" />
 		<a href="" class="button wp-term-images-remove quick" style="display: none;">
-			<?php esc_html_e( 'Remove', 'wp-user-avatars' ); ?>
+			<?php esc_html_e( 'Remove', 'wp-term-images' ); ?>
 		</a>
 
 		<?php
