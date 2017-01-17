@@ -8,7 +8,7 @@
  * License:     GPLv2 or later
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: Pretty images for categories, tags, and other taxonomy terms
- * Version:     0.3.1
+ * Version:     1.0.0
  * Text Domain: wp-term-images
  * Domain Path: /assets/lang/
  */
@@ -27,8 +27,8 @@ function _wp_term_images() {
 	$plugin_path = plugin_dir_path( __FILE__ );
 
 	// Classes
-	require_once $plugin_path . '/includes/class-wp-term-meta-ui.php';
-	require_once $plugin_path . '/includes/class-wp-term-images.php';
+	require_once $plugin_path . 'includes/class-wp-term-meta-ui.php';
+	require_once $plugin_path . 'includes/class-wp-term-images.php';
 }
 add_action( 'plugins_loaded', '_wp_term_images' );
 

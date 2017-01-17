@@ -5,23 +5,25 @@ jQuery( document ).ready( function( $ ) {
 	/* Globals */
 	var wp_term_images_modal;
 
-	/**
-	 * Invoke the media modal
-	 *
-	 * @param {object} event The event
-	 */
-	$( '#addtag, #edittag, #the-list' ).on( 'click', '.wp-term-images-media', function ( event ) {
-		wp_term_images_show_media_modal( this, event );
-	} );
+	$( '#addtag, #edittag, #the-list' )
 
-	/**
-	 * Remove image
-	 *
-	 * @param {object} event The event
-	 */
-	$( '#addtag, #edittag, #the-list' ).on( 'click', '.wp-term-images-remove', function ( event ) {
-		wp_term_images_reset( this, event );
-	} );
+		/**
+		 * Invoke the media modal
+		 *
+		 * @param {object} event The event
+		 */
+		.on( 'click', '.wp-term-images-media', function ( event ) {
+			wp_term_images_show_media_modal( this, event );
+		} )
+
+		/**
+		 * Remove image
+		 *
+		 * @param {object} event The event
+		 */
+		.on( 'click', '.wp-term-images-remove', function ( event ) {
+			wp_term_images_reset( this, event );
+		} );
 
 	/**
 	 * Reset the form on submit.

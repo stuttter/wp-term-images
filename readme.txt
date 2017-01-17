@@ -1,12 +1,12 @@
 === WP Term Images ===
-Contributors: johnjamesjacoby, stuttter
-Tags: taxonomy, term, meta, metadata, image, images
+Contributors:      johnjamesjacoby, stuttter
+Tags:              taxonomy, term, meta, metadata, image, images
 Requires at least: 4.4
-Tested up to: 4.6
-Stable tag: 0.3.1
-License: GPLv2 or later
-License URI: https://www.gnu.org/licenses/gpl-2.0.html
-Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9Q4F4EL5YJ62J
+Tested up to:      4.8
+Stable tag:        1.0.0
+License:           GPLv2 or later
+License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+Donate link:       https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9Q4F4EL5YJ62J
 
 == Description ==
 
@@ -83,13 +83,20 @@ if ( ! empty( $image ) ) {
 
 = Where can I get support? =
 
-The WordPress support forums: https://wordpress.org/support/plugin/wp-term-images/
+* Basic: https://wordpress.org/support/plugin/wp-term-images/
+* Priority: https://chat.flox.io/support/channels/wp-term-images/
 
 = Where can I find documentation? =
 
 http://github.com/stuttter/wp-term-images/
 
 == Changelog ==
+
+= [1.0.0] - 2017-01-16 =
+* Stability!
+* Fix text domains
+* Simplify some JavaScript
+* Handle more JavaScript edge-cases
 
 = [0.3.1] - 2016-07-13 =
 * Fix regular edits

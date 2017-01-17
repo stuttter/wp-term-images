@@ -16,8 +16,6 @@ WP Term Images allows users to assign images to any visible category, tag, or ta
 
 Not since WordPress 4.4.
 
-Install the [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Metadata, for taxonomy terms.") plugin if you're on an earlier version.
-
 ### Does this create new database tables?
 
 No. There are no new database tables with this plugin.
@@ -47,7 +45,8 @@ if ( ! empty( $image ) ) {
 
 ### Where can I get support?
 
-The WordPress support forums: https://wordpress.org/support/plugin/wp-term-images/
+* Basic: https://wordpress.org/support/plugin/wp-term-images/
+* Priority: https://chat.flox.io/support/channels/wp-term-images/
 
 ### Can I contribute?
 
