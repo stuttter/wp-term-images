@@ -182,8 +182,13 @@ class WP_Term_Meta_UI {
 		register_meta(
 			'term',
 			$this->meta_key,
-			array( $this, 'sanitize_callback' ),
-			array( $this, 'auth_callback'     )
+			array(
+				'sanitize_callback' 	=> array( $this, 'sanitize_callback' ),
+				'auth_callback'		=> array( $this, 'auth_callback' ),
+				'show_in_rest'		=> apply_filters( "wp_term_image_show_in_rest", true ),
+				'single'		=> true,
+				'type'			=> 'integer',
+			)
 		);
 	}
 
