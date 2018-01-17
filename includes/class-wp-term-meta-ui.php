@@ -164,7 +164,7 @@ if ( function_exists( 'add_term_meta' ) && ! class_exists( 'WP_Term_Meta_UI' ) )
 
 				// Only add if taxonomy is supported
 				// @codingStandardsIgnoreStart
-				if ( ! empty( $_REQUEST['taxonomy'] ) && in_array( $_REQUEST['taxonomy'], $this->taxonomies, true ) ) {
+				if ( ! empty( $_GET['taxonomy'] ) && in_array( $_GET['taxonomy'], $this->taxonomies, true ) ) {
 				// @codingStandardsIgnoreEnd
 					add_action( 'load-edit-tags.php', array( $this, 'edit_tags_page' ) );
 					add_action( 'load-term.php',      array( $this, 'term_page' ) );
@@ -273,7 +273,7 @@ if ( function_exists( 'add_term_meta' ) && ! class_exists( 'WP_Term_Meta_UI' ) )
 
 			// Ordering by meta key
 			// @codingStandardsIgnoreStart
-			if ( ! empty( $_REQUEST['orderby'] ) && ( $this->meta_key === $_REQUEST['orderby'] ) ) {
+			if ( ! empty( $_GET['orderby'] ) && ( $this->meta_key === $_GET['orderby'] ) ) {
 				// @codingStandardsIgnoreEnd
 				$orderby = 'meta_value';
 			}
@@ -429,7 +429,7 @@ if ( function_exists( 'add_term_meta' ) && ! class_exists( 'WP_Term_Meta_UI' ) )
 
 			// Bail if no taxonomy passed or not on the `meta_key` column
 			// @codingStandardsIgnoreStart
-			if ( empty( $_REQUEST['taxonomy'] ) || ( $this->meta_key !== $custom_column ) || ! empty( $empty ) ) {
+			if ( empty( $_GET['taxonomy'] ) || ( $this->meta_key !== $custom_column ) || ! empty( $empty ) ) {
 				// @codingStandardsIgnoreEnd
 				return;
 			}
