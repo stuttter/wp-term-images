@@ -17,17 +17,17 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
  *
  * @since 0.1.0
  */
-final class WP_Term_Images extends WP_Term_Meta_UI {
+final class WP_Term_Images extends JJJ\WP\Term\Meta\UI {
 
 	/**
 	 * @var string Plugin version
 	 */
-	public $version = '1.0.0';
+	public $version = '2.0.0';
 
 	/**
 	 * @var string Database version
 	 */
-	public $db_version = 201701160001;
+	public $db_version = 201905300001;
 
 	/**
 	 * @var string Metadata key
@@ -100,7 +100,7 @@ final class WP_Term_Images extends WP_Term_Meta_UI {
 	}
 
 	/**
-	 * Return the formatted output for the colomn row
+	 * Return the formatted output for the column row
 	 *
 	 * @since 0.1.2
 	 *

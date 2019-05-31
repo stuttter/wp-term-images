@@ -1,24 +1,19 @@
 === WP Term Images ===
 Contributors:      johnjamesjacoby, stuttter
 Tags:              taxonomy, term, meta, metadata, image, images
+Requires PHP:      5.6.20
 Requires at least: 4.4
-Tested up to:      4.8
-Stable tag:        1.0.0
+Tested up to:      5.2
+Stable tag:        2.0.0
 License:           GPLv2 or later
-License URI:       https://www.gnu.org/licenses/gpl-2.0.html
-Donate link:       https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9Q4F4EL5YJ62J
+License URI:       http://www.gnu.org/licenses/gpl-2.0.html
+Donate link:       https://ko-fi.com/jjj
 
 == Description ==
 
 Images for categories, tags, and other taxonomy terms
 
 WP Term Images allows users to assign images to any visible category, tag, or taxonomy term using the media library, providing a customized look for their taxonomies.
-
-= Dependencies =
-
-Not since WordPress 4.4.
-
-Install the [WP Term Meta](https://wordpress.org/plugins/wp-term-meta/ "Metadata, for taxonomy terms.") plugin if you're on an earlier version.
 
 = Also checkout =
 
@@ -91,6 +86,9 @@ if ( ! empty( $image ) ) {
 http://github.com/stuttter/wp-term-images/
 
 == Changelog ==
+
+= [2.0.0] - 2019-05-30 =
+* Update base class
 
 = [1.0.0] - 2017-01-16 =
 * Stability!
