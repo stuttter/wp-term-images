@@ -10,7 +10,7 @@ namespace JJJ\WP\Term\Meta;
  * and handle the sanitization & saving of values.
  *
  * @since   2.0.0
- * @version 3.0.0
+ * @version 3.0.1
  */
 
 // Exit if accessed directly
@@ -111,7 +111,8 @@ class UI {
 		$this->path       = plugin_dir_path( $this->file );
 		$this->basename   = plugin_basename( $this->file );
 
-		add_action( 'init', array( $this, 'initialize' ), 11 );
+		// Initialize late, after taxonomies are likely registered
+		add_action( 'init', array( $this, 'initialize' ), 999 );
 	}
 
 	/**
