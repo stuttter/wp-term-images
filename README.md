@@ -48,9 +48,9 @@ Throughout the plugin filters are reffered to as ```"filter_name_{$this->meta_ke
 
 | filter name                                        | Type of data | What it does                                                      |
 |----------------------------------------------------|--------------|-------------------------------------------------------------------|
-| "wp_term_{ $this -> meta_key }_allowed_taxonomies" | array        | Array of all taxonomies that will have this plugins UI applied to it |
-| "wp_term_{ $this -> meta_key }_get_taxonomies"     | array        | Allow filters of affected taxonomies                              |
-| "wp_fancy_term_{ $this -> meta_key }"              | bool         | A simple filter to allow for UI variations                        |
+| "wp_term_{$this->meta_key}_allowed_taxonomies" | array        | Array of all taxonomies that will have this plugins UI applied to it |
+| "wp_term_{$this->meta_key}_get_taxonomies"     | array        | Allow filters of affected taxonomies                              |
+| "wp_fancy_term_{$this->meta_key}"              | bool         | A simple filter to allow for UI variations                        |
 
 ### Where can I get support?
 
