@@ -42,6 +42,15 @@ if ( ! empty( $image ) ) {
 	echo '<img src="' . esc_url( $image ) . '" />';
 }
 ```
+### Available filters
+
+Throughout the plugin filters are reffered to as ```"filter_name_{$this->meta_key}_definition"``` where the $this->meta is in this plugin "image", creating the filter name of "filter_name_image_definition". This is setup this way so that the WP_Term_Meta_UI can be reused with all meta data adaptions. 
+
+| filter name                                        | Type of data | What it does                                                      |
+|----------------------------------------------------|--------------|-------------------------------------------------------------------|
+| "wp_term_{$this->meta_key}_allowed_taxonomies" | array        | Array of all taxonomies that will have this plugins UI applied to it |
+| "wp_term_{$this->meta_key}_get_taxonomies"     | array        | Allow filters of affected taxonomies                              |
+| "wp_fancy_term_{$this->meta_key}"              | bool         | A simple filter to allow for UI variations                        |
 
 ### Where can I get support?
 

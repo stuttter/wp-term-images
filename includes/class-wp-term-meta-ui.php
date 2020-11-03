@@ -10,7 +10,7 @@ namespace JJJ\WP\Term\Meta;
  * and handle the sanitization & saving of values.
  *
  * @since   2.0.0
- * @version 3.0.1
+ * @version 3.0.2
  */
 
 // Exit if accessed directly
@@ -123,7 +123,7 @@ class UI {
 	public function initialize() {
 
 		// Get the targeted taxonomies
-		$this->taxonomies = $this->get_taxonomies();
+		$this->taxonomies = apply_filters( "wp_term_{$this->meta_key}_allowed_taxonomies", $this->get_taxonomies() );
 
 		// A simple filter to allow for UI variations
 		$this->fancy      = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
