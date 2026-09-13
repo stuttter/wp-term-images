@@ -300,44 +300,23 @@ class UI {
 			return $clauses;
 		}
 
-		// Default allowed keys & primary key
-		$allowed_keys = array( $this->meta_key );
-
-		// Set allowed keys
-		$allowed_keys[] = 'meta_value';
-		$allowed_keys[] = 'meta_value_num';
-
 		// Tweak orderby
 		$orderby = isset( $args[ 'orderby' ] )
 			? $args[ 'orderby' ]
 			: '';
 
-		// Bail if no orderby or allowed_keys
-		if ( ! in_array( $orderby, $allowed_keys, true ) ) {
+		// Bail unless ordering by this plugin's metadata key
+		if ( $this->meta_key !== $orderby ) {
 			return $clauses;
 		}
 
 		// Join term meta data
 		$clauses['join'] .= " INNER JOIN {$wpdb->termmeta} AS tm ON t.term_id = tm.term_id";
 
-		// Maybe order by term meta
-		switch ( $args[ 'orderby' ] ) {
-			case $this->meta_key :
-			case 'meta_value' :
-				if ( ! empty( $this->key_type ) ) {
-					$clauses['orderby'] = "ORDER BY CAST(tm.meta_value AS tm)";
-				} else {
-					$clauses['orderby'] = "ORDER BY tm.meta_value";
-				}
-				$clauses['fields'] .= ', tm.*';
-				$clauses['where']  .= " AND tm.meta_key = '{$this->meta_key}'";
-				break;
-			case 'meta_value_num':
-				$clauses['orderby'] = "ORDER BY tm.meta_value+0";
-				$clauses['fields'] .= ', tm.*';
-				$clauses['where']  .= " AND tm.meta_key = '{$this->meta_key}'";
-				break;
-		}
+		// Order by this plugin's term meta value
+		$clauses['orderby'] = 'ORDER BY tm.meta_value';
+		$clauses['fields'] .= ', tm.*';
+		$clauses['where']  .= " AND tm.meta_key = '{$this->meta_key}'";
 
 		// Return maybe modified clauses
 		return $clauses;
@@ -482,10 +461,12 @@ class UI {
 		// Get the term being posted
 		$term_key = 'term-' . $this->meta_key;
 
-		// Bail if not updating meta_key
-		$meta = ! empty( $_POST[ $term_key ] )
-			? $_POST[ $term_key ]
-			: '';
+		// Bail if this request is not updating this plugin's metadata
+		if ( ! isset( $_POST[ $term_key ] ) ) {
+			return;
+		}
+
+		$meta = $_POST[ $term_key ];
 
 		$this->set_meta( $term_id, $taxonomy, $meta );
 	}

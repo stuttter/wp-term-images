@@ -1,10 +1,10 @@
 === WP Term Images ===
 Contributors:      johnjamesjacoby, stuttter
 Tags:              taxonomy, term, meta, metadata, image, images
-Requires PHP:      5.6.20
+Requires PHP:      7.4
 Requires at least: 4.4
-Tested up to:      5.2
-Stable tag:        2.0.0
+Tested up to:      7.1
+Stable tag:        2.1.0
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Donate link:       https://ko-fi.com/jjj
@@ -77,13 +77,17 @@ if ( ! empty( $image ) ) {
 = Where can I get support? =
 
 * Basic: https://wordpress.org/support/plugin/wp-term-images/
-* Priority: https://chat.flox.io/support/channels/wp-term-images/
 
 = Where can I find documentation? =
 
-http://github.com/stuttter/wp-term-images/
+https://github.com/stuttter/wp-term-images/wiki
 
 == Changelog ==
+
+= [2.1.0] - 2026-09-13 =
+* Preserve existing images when programmatic term updates omit the image field
+* Avoid intercepting unrelated term-meta sorting queries
+* Require PHP 7.4 and add automated regression coverage
 
 = [2.0.0] - 2019-05-30 =
 * Update base class
