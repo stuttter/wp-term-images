@@ -18,7 +18,7 @@ $assert = static function ( $condition, $message ) {
 };
 
 $term_ids = array();
-$suffix   = strtolower( wp_generate_uuid4() );
+$suffix   = strtolower( wp_generate_password( 12, false, false ) );
 
 try {
 	$assert( ! is_multisite(), 'WP Term Images must use the single-site integration profile.' );
@@ -42,6 +42,7 @@ try {
 	$assert( 123 === (int) get_term_meta( $term_ids[0], 'image', true ), 'A programmatic term update deleted the existing image.' );
 
 	$ordered = get_terms(
+		'category',
 		array(
 			'fields'     => 'ids',
 			'hide_empty' => false,
@@ -49,7 +50,6 @@ try {
 			'meta_key'   => 'rank',
 			'orderby'    => 'meta_value_num',
 			'order'      => 'ASC',
-			'taxonomy'   => 'category',
 		)
 	);
 	$assert( ! is_wp_error( $ordered ), 'The unrelated term-meta query failed.' );
