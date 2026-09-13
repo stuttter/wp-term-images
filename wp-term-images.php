@@ -11,7 +11,6 @@
  * Version:     2.1.0
  * Requires PHP: 7.4
  * Text Domain: wp-term-images
- * Domain Path: /assets/lang/
  */
 
 // Exit if accessed directly

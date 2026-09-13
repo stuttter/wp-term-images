@@ -2,11 +2,17 @@
 
 use PHPUnit\Framework\TestCase;
 
+function wp_verify_nonce() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
+function wp_unslash( $value ) { return $value; }
+function sanitize_text_field( $value ) { return $value; }
+function absint( $value ) { return abs( (int) $value ); }
+
 final class TermMetaUiTest extends TestCase {
 	private $ui;
 
 	protected function setUp(): void {
 		$GLOBALS['wpti_test'] = array();
+		$GLOBALS['wpti_test']['returns']['wp_verify_nonce'] = true;
 		$_POST                = array();
 		$this->ui             = new WPTI_Test_UI();
 
@@ -23,7 +29,8 @@ final class TermMetaUiTest extends TestCase {
 	}
 
 	public function test_explicitly_empty_image_field_removes_image(): void {
-		$_POST['term-image'] = '';
+		$_POST['term-image']       = '';
+		$_POST['term-image-nonce'] = 'valid';
 
 		$this->ui->save_meta( 42, 7, 'category' );
 
@@ -31,11 +38,23 @@ final class TermMetaUiTest extends TestCase {
 	}
 
 	public function test_explicit_image_field_updates_image(): void {
-		$_POST['term-image'] = '123';
+		$_POST['term-image']       = '123';
+		$_POST['term-image-nonce'] = 'valid';
 
 		$this->ui->save_meta( 42, 7, 'category' );
 
-		$this->assertSame( array( array( 42, 'image', '123' ) ), $GLOBALS['wpti_test']['calls']['update_term_meta'] );
+		$this->assertSame( array( array( 42, 'image', 123 ) ), $GLOBALS['wpti_test']['calls']['update_term_meta'] );
+	}
+
+	public function test_invalid_nonce_does_not_change_image(): void {
+		$_POST['term-image']       = '123';
+		$_POST['term-image-nonce'] = 'invalid';
+		$GLOBALS['wpti_test']['returns']['wp_verify_nonce'] = false;
+
+		$this->ui->save_meta( 42, 7, 'category' );
+
+		$this->assertArrayNotHasKey( 'delete_term_meta', $GLOBALS['wpti_test']['calls'] ?? array() );
+		$this->assertArrayNotHasKey( 'update_term_meta', $GLOBALS['wpti_test']['calls'] ?? array() );
 	}
 
 	public function test_unrelated_numeric_meta_ordering_is_untouched(): void {

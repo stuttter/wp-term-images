@@ -1,6 +1,6 @@
 === WP Term Images ===
 Contributors:      johnjamesjacoby, stuttter
-Tags:              taxonomy, term, meta, metadata, image, images
+Tags:              taxonomy, term, metadata, image, images
 Requires PHP:      7.4
 Requires at least: 4.4
 Tested up to:      7.1
@@ -8,6 +8,8 @@ Stable tag:        2.1.0
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Donate link:       https://ko-fi.com/jjj
+
+Assign images to categories, tags, and other taxonomy terms with the WordPress media library.
 
 == Description ==
 

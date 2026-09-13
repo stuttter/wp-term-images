@@ -417,15 +417,14 @@ class UI {
 		}
 
 		// Get the metadata
-		$meta   = $this->get_meta( $term_id );
-		$retval = $this->no_value;
+		$meta = $this->get_meta( $term_id );
 
-		// Output HTML element if not empty
+		// Output the placeholder or formatted metadata value
 		if ( ! empty( $meta ) ) {
-			$retval = $this->format_output( $meta );
+			$this->format_output( $meta );
+		} else {
+			echo wp_kses_post( $this->no_value );
 		}
-
-		echo $retval;
 	}
 
 	/**
@@ -466,7 +465,13 @@ class UI {
 			return;
 		}
 
-		$meta = $_POST[ $term_key ];
+		// Bail if this plugin's form did not authorize the update
+		$nonce_key = $term_key . '-nonce';
+		if ( ! isset( $_POST[ $nonce_key ] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST[ $nonce_key ] ) ), $term_key ) ) {
+			return;
+		}
+
+		$meta = absint( wp_unslash( $_POST[ $term_key ] ) );
 
 		$this->set_meta( $term_id, $taxonomy, $meta );
 	}
@@ -524,6 +529,8 @@ class UI {
 				<?php echo esc_html( $this->labels['singular'] ); ?>
 			</label>
 
+			<?php wp_nonce_field( 'term-' . $this->meta_key, 'term-' . $this->meta_key . '-nonce' ); ?>
+
 			<?php $this->form_field(); ?>
 
 			<?php if ( ! empty( $this->labels['description'] ) ) : ?>
@@ -556,6 +563,8 @@ class UI {
 				</label>
 			</th>
 			<td>
+				<?php wp_nonce_field( 'term-' . $this->meta_key, 'term-' . $this->meta_key . '-nonce' ); ?>
+
 				<?php $this->form_field( $term ); ?>
 
 				<?php if ( ! empty( $this->labels['description'] ) ) : ?>
@@ -591,6 +600,8 @@ class UI {
 				<label>
 					<span class="title"><?php echo esc_html( $this->labels['singular'] ); ?></span>
 					<span class="input-text-wrap">
+
+						<?php wp_nonce_field( 'term-' . $this->meta_key, 'term-' . $this->meta_key . '-nonce' ); ?>
 
 						<?php $this->quick_edit_form_field(); ?>
 
