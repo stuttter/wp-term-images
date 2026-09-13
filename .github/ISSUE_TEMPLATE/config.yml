@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: WordPress.org support
+    url: https://wordpress.org/support/plugin/wp-term-images/
+    about: Ask installation and usage questions in the public support forum.
+  - name: Security report
+    url: https://github.com/stuttter/wp-term-images/security/advisories/new
+    about: Report a suspected vulnerability privately.

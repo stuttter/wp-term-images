@@ -4,13 +4,13 @@ Images for categories, tags, and other taxonomy terms
 
 WP Term Images allows users to assign images to any visible category, tag, or taxonomy term using the media library, providing a customized look for their taxonomy terms.
 
-# Installation
+## Installation
 
 * Download and install using the built in WordPress plugin installer.
 * Activate in the "Plugins" area of your admin by clicking the "Activate" link.
 * No further setup or configuration is necessary.
 
-# FAQ
+## FAQ
 
 ### Does this plugin depend on any others?
 
@@ -46,8 +46,8 @@ if ( ! empty( $image ) ) {
 ### Where can I get support?
 
 * Basic: https://wordpress.org/support/plugin/wp-term-images/
-* Priority: https://chat.flox.io/support/channels/wp-term-images/
 
 ### Can I contribute?
 
-Yes, please! The number of users needing more robust taxonomy visuals is growing fast. Having an easy-to-use UI and powerful set of functions is critical to managing complex WordPress installations. If this is your thing, please help us out!
+Yes. Start with [CONTRIBUTING.md](CONTRIBUTING.md), and keep each pull request
+focused with regression coverage for behavior changes.
