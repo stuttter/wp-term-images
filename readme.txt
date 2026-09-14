@@ -4,7 +4,7 @@ Tags:              taxonomy, term, metadata, image, images
 Requires PHP:      7.4
 Requires at least: 4.4
 Tested up to:      7.1
-Stable tag:        2.1.1
+Stable tag:        2.1.2
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Donate link:       https://ko-fi.com/jjj
@@ -85,6 +85,9 @@ if ( ! empty( $image ) ) {
 https://github.com/stuttter/wp-term-images/wiki
 
 == Changelog ==
+
+= [2.1.2] - 2026-09-14 =
+* Republish the verified package through corrected WordPress.org distribution automation
 
 = [2.1.1] - 2026-09-14 =
 * Refresh release packaging and distribution metadata
