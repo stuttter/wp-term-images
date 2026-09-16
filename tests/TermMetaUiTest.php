@@ -79,6 +79,25 @@ final class TermMetaUiTest extends TestCase {
 		$this->assertFalse( $registration[2]['show_in_rest'] );
 	}
 
+	public function test_visible_taxonomies_are_targeted_by_default(): void {
+		$GLOBALS['wpti_test']['taxonomies'] = array( 'category', 'post_tag' );
+		$ui = new WPTI_Test_Initialize_UI();
+
+		$ui->initialize();
+
+		$this->assertSame( array( 'category', 'post_tag' ), $ui->taxonomies );
+	}
+
+	public function test_target_taxonomies_can_be_restricted(): void {
+		$GLOBALS['wpti_test']['taxonomies'] = array( 'category', 'post_tag' );
+		$GLOBALS['wpti_test']['filters']['wp_term_image_allowed_taxonomies'] = array( 'category' );
+		$ui = new WPTI_Test_Initialize_UI();
+
+		$ui->initialize();
+
+		$this->assertSame( array( 'category' ), $ui->taxonomies );
+	}
+
 	public function test_unrelated_numeric_meta_ordering_is_untouched(): void {
 		$clauses = $this->clauses();
 

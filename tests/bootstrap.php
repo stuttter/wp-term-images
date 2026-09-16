@@ -16,6 +16,12 @@ function delete_term_meta() { return wpti_test_call( __FUNCTION__, func_get_args
 function update_term_meta() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
 function clean_term_cache() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
 function register_meta() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
+function wp_parse_args( $args, $defaults ) { return array_merge( $defaults, $args ); }
+function get_taxonomies() {
+	wpti_test_call( __FUNCTION__, func_get_args() );
+
+	return $GLOBALS['wpti_test']['taxonomies'] ?? array();
+}
 function apply_filters( $hook, $value ) {
 	wpti_test_call( __FUNCTION__, func_get_args() );
 
@@ -31,4 +37,14 @@ class WPTI_Test_UI extends JJJ\WP\Term\Meta\UI {
 		$this->meta_key   = 'image';
 		$this->taxonomies = array( 'category', 'product_cat' );
 	}
+}
+
+class WPTI_Test_Initialize_UI extends JJJ\WP\Term\Meta\UI {
+	public function __construct() {
+		$this->meta_key = 'image';
+	}
+
+	public function register_meta() {}
+
+	public function add_hooks() {}
 }

@@ -123,7 +123,8 @@ class UI {
 	public function initialize() {
 
 		// Get the targeted taxonomies
-		$this->taxonomies = $this->get_taxonomies();
+		$taxonomies       = $this->get_taxonomies();
+		$this->taxonomies = (array) apply_filters( "wp_term_{$this->meta_key}_allowed_taxonomies", $taxonomies );
 
 		// A simple filter to allow for UI variations
 		$this->fancy      = apply_filters( "wp_fancy_term_{$this->meta_key}", true );
