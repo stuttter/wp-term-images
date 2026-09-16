@@ -9,6 +9,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  * Description: Pretty images for categories, tags, and other taxonomy terms
  * Version:     2.1.2
+ * Requires at least: 6.4
  * Requires PHP: 7.4
  * Text Domain: wp-term-images
  */
