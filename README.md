@@ -43,6 +43,10 @@ if ( ! empty( $image ) ) {
 }
 ```
 
+The attachment ID is also exposed as the term's `image` metadata in the
+WordPress REST API. To keep it out of REST responses, return `false` from the
+`wp_term_image_show_in_rest` filter.
+
 ### Where can I get support?
 
 * Basic: https://wordpress.org/support/plugin/wp-term-images/

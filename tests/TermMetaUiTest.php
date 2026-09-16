@@ -57,6 +57,28 @@ final class TermMetaUiTest extends TestCase {
 		$this->assertArrayNotHasKey( 'update_term_meta', $GLOBALS['wpti_test']['calls'] ?? array() );
 	}
 
+	public function test_image_meta_is_available_in_the_rest_api(): void {
+		$this->ui->register_meta();
+
+		$registration = $GLOBALS['wpti_test']['calls']['register_meta'][0];
+
+		$this->assertSame( 'term', $registration[0] );
+		$this->assertSame( 'image', $registration[1] );
+		$this->assertTrue( $registration[2]['show_in_rest'] );
+		$this->assertTrue( $registration[2]['single'] );
+		$this->assertSame( 'integer', $registration[2]['type'] );
+	}
+
+	public function test_image_meta_can_be_hidden_from_the_rest_api(): void {
+		$GLOBALS['wpti_test']['filters']['wp_term_image_show_in_rest'] = false;
+
+		$this->ui->register_meta();
+
+		$registration = $GLOBALS['wpti_test']['calls']['register_meta'][0];
+
+		$this->assertFalse( $registration[2]['show_in_rest'] );
+	}
+
 	public function test_unrelated_numeric_meta_ordering_is_untouched(): void {
 		$clauses = $this->clauses();
 

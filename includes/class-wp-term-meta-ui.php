@@ -188,9 +188,14 @@ class UI {
 	 * @since 2.0.0
 	 */
 	public function register_meta() {
+		$show_in_rest = apply_filters( "wp_term_{$this->meta_key}_show_in_rest", true );
+
 		register_meta( 'term', $this->meta_key, array(
 			'auth_callback'     => array( $this, 'auth_callback'     ),
-			'sanitize_callback' => array( $this, 'sanitize_callback' )
+			'sanitize_callback' => array( $this, 'sanitize_callback' ),
+			'show_in_rest'      => $show_in_rest,
+			'single'            => true,
+			'type'              => 'integer',
 		) );
 	}
 

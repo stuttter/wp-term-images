@@ -2,6 +2,9 @@
 
 ## Unreleased
 
+- Expose the image attachment ID through term metadata in the WordPress REST
+  API, with a filter to disable exposure.
+
 ## 2.1.3 (2026-09-16)
 
 - Require WordPress 6.4 or newer.
