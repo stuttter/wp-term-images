@@ -43,6 +43,21 @@ if ( ! empty( $image ) ) {
 }
 ```
 
+The attachment ID is also exposed as the term's `image` metadata in the
+WordPress REST API. To keep it out of REST responses, return `false` from the
+`wp_term_image_show_in_rest` filter.
+
+### Can I limit the taxonomies that use term images?
+
+Yes. Filter the visible taxonomies after discovery and return only the ones
+that should use the image interface:
+
+```
+add_filter( 'wp_term_image_allowed_taxonomies', function( $taxonomies ) {
+	return array( 'category', 'post_tag' );
+} );
+```
+
 ### Where can I get support?
 
 * Basic: https://wordpress.org/support/plugin/wp-term-images/

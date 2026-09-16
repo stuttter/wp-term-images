@@ -41,6 +41,21 @@ try {
 	$assert( ! is_wp_error( $updated ), 'WordPress could not update the smoke-test category.' );
 	$assert( 123 === (int) get_term_meta( $term_ids[0], 'image', true ), 'A programmatic term update deleted the existing image.' );
 
+	$response = rest_do_request( new WP_REST_Request( 'GET', '/wp/v2/categories/' . $term_ids[0] ) );
+	$assert( 200 === $response->get_status(), 'The category REST request failed.' );
+	$data = $response->get_data();
+	$assert( 123 === (int) $data['meta']['image'], 'The REST response did not expose the stored image attachment ID.' );
+
+	unregister_meta_key( 'term', 'image' );
+	add_filter( 'wp_term_image_show_in_rest', '__return_false' );
+	$image_ui = new WP_Term_Images( WP_PLUGIN_DIR . '/wp-term-images/wp-term-images.php' );
+	$image_ui->register_meta();
+	$response = rest_do_request( new WP_REST_Request( 'GET', '/wp/v2/categories/' . $term_ids[0] ) );
+	$assert( 200 === $response->get_status(), 'The filtered category REST request failed.' );
+	$data = $response->get_data();
+	$assert( ! isset( $data['meta']['image'] ), 'The REST opt-out filter did not hide image metadata.' );
+	remove_filter( 'wp_term_image_show_in_rest', '__return_false' );
+
 	$ordered = get_terms(
 		'category',
 		array(

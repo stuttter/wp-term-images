@@ -57,6 +57,71 @@ final class TermMetaUiTest extends TestCase {
 		$this->assertArrayNotHasKey( 'update_term_meta', $GLOBALS['wpti_test']['calls'] ?? array() );
 	}
 
+	public function test_image_meta_is_available_in_the_rest_api(): void {
+		$this->ui->register_meta();
+
+		$registration = $GLOBALS['wpti_test']['calls']['register_meta'][0];
+
+		$this->assertSame( 'term', $registration[0] );
+		$this->assertSame( 'image', $registration[1] );
+		$this->assertTrue( $registration[2]['show_in_rest'] );
+		$this->assertTrue( $registration[2]['single'] );
+		$this->assertSame( 'integer', $registration[2]['type'] );
+	}
+
+	public function test_image_meta_can_be_hidden_from_the_rest_api(): void {
+		$GLOBALS['wpti_test']['filters']['wp_term_image_show_in_rest'] = false;
+
+		$this->ui->register_meta();
+
+		$registration = $GLOBALS['wpti_test']['calls']['register_meta'][0];
+
+		$this->assertFalse( $registration[2]['show_in_rest'] );
+	}
+
+	public function test_generic_meta_registration_preserves_legacy_defaults(): void {
+		$ui = new WPTI_Test_Generic_UI();
+
+		$ui->register_meta();
+
+		$registration = $GLOBALS['wpti_test']['calls']['register_meta'][0];
+
+		$this->assertArrayNotHasKey( 'show_in_rest', $registration[2] );
+		$this->assertArrayNotHasKey( 'single', $registration[2] );
+		$this->assertArrayNotHasKey( 'type', $registration[2] );
+	}
+
+	public function test_visible_taxonomies_are_targeted_by_default(): void {
+		$GLOBALS['wpti_test']['taxonomies'] = array( 'category', 'post_tag' );
+		$ui = new WPTI_Test_Initialize_UI();
+
+		$ui->initialize();
+
+		$this->assertSame( array( 'category', 'post_tag' ), $ui->taxonomies );
+	}
+
+	public function test_target_taxonomies_can_be_restricted(): void {
+		$GLOBALS['wpti_test']['taxonomies'] = array( 'category', 'post_tag' );
+		$GLOBALS['wpti_test']['filters']['wp_term_image_allowed_taxonomies'] = array( 'category' );
+		$ui = new WPTI_Test_Initialize_UI();
+
+		$ui->initialize();
+
+		$this->assertSame( array( 'category' ), $ui->taxonomies );
+	}
+
+	public function test_empty_target_taxonomies_skip_registration_and_hooks(): void {
+		$GLOBALS['wpti_test']['taxonomies'] = array( 'category', 'post_tag' );
+		$GLOBALS['wpti_test']['filters']['wp_term_image_allowed_taxonomies'] = array();
+		$ui = new WPTI_Test_Initialize_UI();
+
+		$ui->initialize();
+
+		$this->assertSame( array(), $ui->taxonomies );
+		$this->assertSame( 0, $ui->register_meta_calls );
+		$this->assertSame( 0, $ui->add_hooks_calls );
+	}
+
 	public function test_unrelated_numeric_meta_ordering_is_untouched(): void {
 		$clauses = $this->clauses();
 
