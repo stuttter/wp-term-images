@@ -22,7 +22,7 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		/**
 		 * @var string Plugin version
 		 */
-		public $version = '2.1.3';
+		public $version = '2.2.0';
 
 		/**
 		 * @var string Database version

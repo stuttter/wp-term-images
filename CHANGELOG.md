@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 2.2.0 (2026-09-16)
+
 - Expose the image attachment ID through term metadata in the WordPress REST
   API, with a filter to disable exposure.
 - Allow sites to restrict the taxonomies that use the term-image interface.

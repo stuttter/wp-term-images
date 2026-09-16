@@ -4,7 +4,7 @@ Tags:              taxonomy, term, metadata, image, images
 Requires PHP:      7.4
 Requires at least: 6.4
 Tested up to:      7.1
-Stable tag:        2.1.3
+Stable tag:        2.2.0
 License:           GPLv2 or later
 License URI:       http://www.gnu.org/licenses/gpl-2.0.html
 Donate link:       https://ko-fi.com/jjj
@@ -100,6 +100,11 @@ add_filter( 'wp_term_image_allowed_taxonomies', function( $taxonomies ) {
 https://github.com/stuttter/wp-term-images/wiki
 
 == Changelog ==
+
+= [2.2.0] - 2026-09-16 =
+* Expose image attachment IDs through term metadata in the WordPress REST API
+* Allow sites to restrict the taxonomies that use the term-image interface
+* Add enforceable WordPress and PHP compatibility coding standards
 
 = [2.1.3] - 2026-09-16 =
 * Require WordPress 6.4 or newer
