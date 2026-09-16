@@ -2,7 +2,7 @@
 
 ## Compatibility
 
-- Preserve PHP 7.4 and WordPress 4.4 compatibility unless a dedicated pull
+- Preserve PHP 7.4 and WordPress 6.4 compatibility unless a dedicated pull
   request explicitly changes the published minimums.
 - Treat term metadata writes, taxonomy queries, media-library integration, and
   quick editing as elevated-risk behavior.

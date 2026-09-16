@@ -2,6 +2,7 @@
 
 ## Unreleased
 
+- Require WordPress 6.4 or newer.
 - Preserve existing images during programmatic term updates that do not submit
   the WP Term Images field.
 - Avoid intercepting unrelated `meta_value` and `meta_value_num` term queries.
