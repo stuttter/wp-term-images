@@ -35,6 +35,21 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		public $meta_key = 'image';
 
 		/**
+		 * @var bool Expose image attachment IDs in the REST API
+		 */
+		protected $meta_show_in_rest = true;
+
+		/**
+		 * @var bool Store one image attachment ID per term
+		 */
+		protected $meta_single = true;
+
+		/**
+		 * @var string Image metadata schema type
+		 */
+		protected $meta_type = 'integer';
+
+		/**
 		 * Hook into queries, admin screens, and more!
 		 *
 		 * @since 0.1.0

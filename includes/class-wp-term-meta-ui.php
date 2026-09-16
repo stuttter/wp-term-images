@@ -45,6 +45,21 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		protected $meta_key = '';
 
 		/**
+		 * @var bool|null Whether to expose metadata in the REST API
+		 */
+		protected $meta_show_in_rest = null;
+
+		/**
+		 * @var bool|null Whether metadata has a single value
+		 */
+		protected $meta_single = null;
+
+		/**
+		 * @var string|null Metadata schema type
+		 */
+		protected $meta_type = null;
+
+		/**
 		 * @var string No value
 		 */
 		protected $no_value = '&#8212;';
@@ -189,18 +204,28 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * @since 2.0.0
 		 */
 		public function register_meta() {
-			$show_in_rest = apply_filters( "wp_term_{$this->meta_key}_show_in_rest", true );
+			$args = array(
+				'auth_callback'     => array( $this, 'auth_callback' ),
+				'sanitize_callback' => array( $this, 'sanitize_callback' ),
+			);
+
+			// Preserve the generic base class defaults unless a subclass opts in.
+			if ( null !== $this->meta_show_in_rest ) {
+				$args['show_in_rest'] = apply_filters( "wp_term_{$this->meta_key}_show_in_rest", $this->meta_show_in_rest );
+			}
+
+			if ( null !== $this->meta_single ) {
+				$args['single'] = $this->meta_single;
+			}
+
+			if ( null !== $this->meta_type ) {
+				$args['type'] = $this->meta_type;
+			}
 
 			register_meta(
 				'term',
 				$this->meta_key,
-				array(
-					'auth_callback'     => array( $this, 'auth_callback' ),
-					'sanitize_callback' => array( $this, 'sanitize_callback' ),
-					'show_in_rest'      => $show_in_rest,
-					'single'            => true,
-					'type'              => 'integer',
-				)
+				$args
 			);
 		}
 
@@ -416,17 +441,17 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param string $output
+		 * @param string $empty
 		 * @param string $custom_column
 		 * @param int    $term_id
 		 *
 		 * @return mixed
 		 */
-		public function add_column_value( $output = '', $custom_column = '', $term_id = 0 ) {
+		public function add_column_value( $empty = '', $custom_column = '', $term_id = 0 ) {
 
 			// Bail if no taxonomy passed or not on the `meta_key` column
-			if ( empty( $_REQUEST['taxonomy'] ) || ( $this->meta_key !== $custom_column ) || ! empty( $output ) ) {
-				return $output;
+			if ( empty( $_REQUEST['taxonomy'] ) || ( $this->meta_key !== $custom_column ) || ! empty( $empty ) ) {
+				return $empty;
 			}
 
 			// Get the metadata

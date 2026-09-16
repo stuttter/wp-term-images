@@ -19,6 +19,7 @@
 		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedFunctionFound"/>
 		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedHooknameFound"/>
 		<exclude name="WordPress.NamingConventions.PrefixAllGlobals.NonPrefixedNamespaceFound"/>
+		<exclude name="Universal.NamingConventions.NoReservedKeywordParameterNames.emptyFound"/>
 	</rule>
 	<rule ref="PHPCompatibilityWP"/>
 

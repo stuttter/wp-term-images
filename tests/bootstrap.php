@@ -34,8 +34,17 @@ require_once dirname( __DIR__ ) . '/includes/class-wp-term-meta-ui.php';
 
 class WPTI_Test_UI extends JJJ\WP\Term\Meta\UI {
 	public function __construct() {
-		$this->meta_key   = 'image';
-		$this->taxonomies = array( 'category', 'product_cat' );
+		$this->meta_key          = 'image';
+		$this->meta_show_in_rest = true;
+		$this->meta_single       = true;
+		$this->meta_type         = 'integer';
+		$this->taxonomies        = array( 'category', 'product_cat' );
+	}
+}
+
+class WPTI_Test_Generic_UI extends JJJ\WP\Term\Meta\UI {
+	public function __construct() {
+		$this->meta_key = 'custom';
 	}
 }
 

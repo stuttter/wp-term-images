@@ -79,6 +79,18 @@ final class TermMetaUiTest extends TestCase {
 		$this->assertFalse( $registration[2]['show_in_rest'] );
 	}
 
+	public function test_generic_meta_registration_preserves_legacy_defaults(): void {
+		$ui = new WPTI_Test_Generic_UI();
+
+		$ui->register_meta();
+
+		$registration = $GLOBALS['wpti_test']['calls']['register_meta'][0];
+
+		$this->assertArrayNotHasKey( 'show_in_rest', $registration[2] );
+		$this->assertArrayNotHasKey( 'single', $registration[2] );
+		$this->assertArrayNotHasKey( 'type', $registration[2] );
+	}
+
 	public function test_visible_taxonomies_are_targeted_by_default(): void {
 		$GLOBALS['wpti_test']['taxonomies'] = array( 'category', 'post_tag' );
 		$ui = new WPTI_Test_Initialize_UI();
