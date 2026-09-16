@@ -49,11 +49,18 @@ class WPTI_Test_Generic_UI extends JJJ\WP\Term\Meta\UI {
 }
 
 class WPTI_Test_Initialize_UI extends JJJ\WP\Term\Meta\UI {
+	public $register_meta_calls = 0;
+	public $add_hooks_calls     = 0;
+
 	public function __construct() {
 		$this->meta_key = 'image';
 	}
 
-	public function register_meta() {}
+	public function register_meta() {
+		++$this->register_meta_calls;
+	}
 
-	public function add_hooks() {}
+	public function add_hooks() {
+		++$this->add_hooks_calls;
+	}
 }

@@ -110,6 +110,18 @@ final class TermMetaUiTest extends TestCase {
 		$this->assertSame( array( 'category' ), $ui->taxonomies );
 	}
 
+	public function test_empty_target_taxonomies_skip_registration_and_hooks(): void {
+		$GLOBALS['wpti_test']['taxonomies'] = array( 'category', 'post_tag' );
+		$GLOBALS['wpti_test']['filters']['wp_term_image_allowed_taxonomies'] = array();
+		$ui = new WPTI_Test_Initialize_UI();
+
+		$ui->initialize();
+
+		$this->assertSame( array(), $ui->taxonomies );
+		$this->assertSame( 0, $ui->register_meta_calls );
+		$this->assertSame( 0, $ui->add_hooks_calls );
+	}
+
 	public function test_unrelated_numeric_meta_ordering_is_untouched(): void {
 		$clauses = $this->clauses();
 
