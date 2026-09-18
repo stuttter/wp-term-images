@@ -11,5 +11,6 @@
 /composer.json export-ignore
 /composer.lock export-ignore
 /.phpcs.xml.dist export-ignore
+/phpcs-baseline.json export-ignore
 /phpunit.xml.dist export-ignore
 /tests export-ignore
