@@ -18,7 +18,7 @@ belong in the private reporting channel described in `SECURITY.md`.
 - Identify taxonomy-query, media, capability, database, and release impact.
 - Do not commit credentials, dependency directories, caches, databases, or
   generated release ZIP files.
-- Run `composer phpcs` and `composer test` before requesting review.
+- Run `composer test` locally; the centrally managed PHPCS gate runs in CI.
 - Wait for every required check and resolve review conversations before merge.
 
 AI-assisted contributions are welcome, but the contributor remains responsible
@@ -28,5 +28,5 @@ for understanding and validating the result.
 
 The plugin and its Composer development toolchain require PHP 7.4 or newer.
 Install the locked dependencies with `composer install`, then run the test suite
-with `composer test`. Run the WordPress and PHP compatibility standards with
-`composer phpcs`.
+with `composer test`. Shared CI runs the centrally locked WordPress and PHP
+compatibility standards.
