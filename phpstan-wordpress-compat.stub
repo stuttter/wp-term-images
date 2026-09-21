@@ -1,0 +1,25 @@
+<?php
+
+/**
+ * WordPress retains integer asset versions and stringifies them in URLs.
+ *
+ * @param string                     $handle
+ * @param string                     $src
+ * @param array<int, string>         $deps
+ * @param string|int|bool|null       $ver
+ * @param array<string, mixed>|bool  $args
+ * @return void
+ */
+function wp_enqueue_script( $handle, $src = '', $deps = array(), $ver = false, $args = array() ) {}
+
+/**
+ * WordPress retains integer asset versions and stringifies them in URLs.
+ *
+ * @param string               $handle
+ * @param string               $src
+ * @param array<int, string>   $deps
+ * @param string|int|bool|null $ver
+ * @param string               $media
+ * @return void
+ */
+function wp_enqueue_style( $handle, $src = '', $deps = array(), $ver = false, $media = 'all' ) {}

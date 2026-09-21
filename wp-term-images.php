@@ -21,6 +21,8 @@ defined( 'ABSPATH' ) || exit;
  * Include the required files & dependencies
  *
  * @since 0.1.0
+ *
+ * @return void
  */
 function _wp_term_images() {
 
@@ -37,6 +39,8 @@ add_action( 'plugins_loaded', '_wp_term_images' );
  * Instantiate the main class
  *
  * @since 0.2.0
+ *
+ * @return void
  */
 function _wp_term_images_init() {
 	new WP_Term_Images( __FILE__ );

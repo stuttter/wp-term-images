@@ -30,7 +30,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		protected $version = '0.0.0';
 
 		/**
-		 * @var string Database version
+		 * @var int Database version
 		 */
 		protected $db_version = 201905301644;
 
@@ -65,7 +65,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		protected $no_value = '&#8212;';
 
 		/**
-		 * @var array Array of labels
+		 * @var array<string, string> Array of labels
 		 */
 		protected $labels = array(
 			'singular'   => '',
@@ -94,7 +94,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		public $basename = '';
 
 		/**
-		 * @var array Which taxonomies are being targeted?
+		 * @var array<string> Which taxonomies are being targeted?
 		 */
 		public $taxonomies = array();
 
@@ -117,6 +117,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Hook into queries, admin screens, and more!
 		 *
 		 * @since 2.0.0
+		 * @param string $file Plugin file.
 		 */
 		public function __construct( $file = '' ) {
 
@@ -134,6 +135,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Initialize on `init` action so taxonomies are registered
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function initialize() {
 
@@ -160,6 +162,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Add the hooks, on the `init` action
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function add_hooks() {
 
@@ -202,6 +205,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Register term meta, key, and callbacks
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function register_meta() {
 			$args = array(
@@ -251,7 +255,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * @param  int     $post_id
 		 * @param  int     $user_id
 		 * @param  string  $cap
-		 * @param  array   $caps
+		 * @param  array<string> $caps
 		 *
 		 * @return boolean
 		 */
@@ -269,6 +273,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Administration area hooks
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function admin_init() {
 
@@ -280,6 +285,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Administration area hooks
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function edit_tags() {
 
@@ -300,8 +306,9 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * @since 2.0.0
 		 *
 		 * @param  string  $orderby
-		 * @param  array   $query_vars
-		 * @param  array   $taxonomies
+		 * @param  array<string, mixed> $query_vars
+		 * @param  array<int, string>    $taxonomies
+		 * @return string
 		 */
 		public function get_terms_orderby( $orderby = '', $query_vars = array(), $taxonomies = array() ) {
 
@@ -323,9 +330,10 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param  array  $clauses
-		 * @param  array  $taxonomies
-		 * @param  array  $args
+		 * @param  array<string, string> $clauses
+		 * @param  array<int, string>    $taxonomies
+		 * @param  array<string, mixed> $args
+		 * @return array<string, string>
 		 */
 		public function terms_clauses( $clauses = array(), $taxonomies = array(), $args = array() ) {
 			global $wpdb;
@@ -363,6 +371,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Enqueue quick-edit JS
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function enqueue_scripts() { }
 
@@ -370,6 +379,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Add help tabs for this metadata
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function help_tabs() { }
 
@@ -377,6 +387,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Add help tabs for this metadata
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function admin_head() { }
 
@@ -384,6 +395,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Quick edit ajax updating
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function ajax_update() {}
 
@@ -392,8 +404,8 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param array $args
-		 * @return array
+		 * @param array<string, mixed> $args
+		 * @return array<int|string, string>
 		 */
 		private function get_taxonomies( $args = array() ) {
 
@@ -426,9 +438,9 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param array $columns
+		 * @param array<string, string> $columns
 		 *
-		 * @return array
+		 * @return array<string, string>
 		 */
 		public function add_column_header( $columns = array() ) {
 			$columns[ $this->meta_key ] = $this->labels['singular'];
@@ -466,13 +478,27 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		}
 
 		/**
+		 * Format a metadata value for the list-table column.
+		 *
+		 * Subclasses override this when they need richer markup.
+		 *
+		 * @since 3.0.1
+		 *
+		 * @param mixed $meta Metadata value.
+		 * @return void
+		 */
+		protected function format_output( $meta = '' ) {
+			echo esc_html( (string) $meta );
+		}
+
+		/**
 		 * Allow sorting by this `meta_key`
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param array $columns
+		 * @param array<string, string> $columns
 		 *
-		 * @return array
+		 * @return array<string, string>
 		 */
 		public function sortable_columns( $columns = array() ) {
 			$columns[ $this->meta_key ] = $this->meta_key;
@@ -487,6 +513,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * @param  int     $term_id
 		 * @param  int     $tt_id
 		 * @param  string  $taxonomy
+		 * @return void
 		 */
 		public function save_meta( $term_id = 0, $tt_id = 0, $taxonomy = '' ) {
 
@@ -521,8 +548,9 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @param  int     $term_id
 		 * @param  string  $taxonomy
-		 * @param  string  $meta
+		 * @param  mixed   $meta
 		 * @param  bool    $clean_cache
+		 * @return void
 		 */
 		public function set_meta( $term_id = 0, $taxonomy = '', $meta = '', $clean_cache = false ) {
 
@@ -547,6 +575,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * @since 2.0.0
 		 *
 		 * @param int $term_id
+		 * @return mixed
 		 */
 		public function get_meta( $term_id = 0 ) {
 			return get_term_meta( $term_id, $this->meta_key, true );
@@ -558,6 +587,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Output the form field for this metadata when adding a new term
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		public function add_form_field() {
 			?>
@@ -589,7 +619,8 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param object $term
+		 * @param \WP_Term|false $term
+		 * @return void
 		 */
 		public function edit_form_field( $term = false ) {
 			?>
@@ -624,7 +655,10 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param  $term
+		 * @param string $column_name Column name.
+		 * @param string $screen Screen name.
+		 * @param string $name Taxonomy name.
+		 * @return false|void
 		 */
 		public function quick_edit_meta( $column_name = '', $screen = '', $name = '' ) {
 
@@ -657,7 +691,8 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param  $term
+		 * @param \WP_Term|false|string $term Term or empty value.
+		 * @return void
 		 */
 		protected function form_field( $term = '' ) {
 
@@ -677,7 +712,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 2.0.0
 		 *
-		 * @param  $term
+		 * @return void
 		 */
 		protected function quick_edit_form_field() {
 			?>
@@ -695,6 +730,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Runs on `init`
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		protected function maybe_upgrade_database() {
 
@@ -703,7 +739,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 
 			// Needs
 			if ( $db_version < $this->db_version ) {
-				$this->upgrade_database( $db_version );
+				$this->upgrade_database();
 			}
 		}
 
@@ -711,6 +747,7 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 * Upgrade the database as needed, based on version comparisons
 		 *
 		 * @since 2.0.0
+		 * @return void
 		 */
 		private function upgrade_database() {
 			update_option( $this->db_version_key, $this->db_version );
@@ -723,7 +760,8 @@ if ( ! class_exists( __NAMESPACE__ . '\\UI' ) ) :
 		 *
 		 * @since 3.0.0
 		 *
-		 * @param array $taxonomies
+		 * @param array<string>|string $taxonomies
+		 * @return bool
 		 */
 		private function is_taxonomy( $taxonomies = array() ) {
 

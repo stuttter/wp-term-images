@@ -25,7 +25,7 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		public $version = '2.2.0';
 
 		/**
-		 * @var string Database version
+		 * @var int Database version
 		 */
 		public $db_version = 201905300001;
 
@@ -53,6 +53,8 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		 * Hook into queries, admin screens, and more!
 		 *
 		 * @since 0.1.0
+		 *
+		 * @param string $file Main plugin file.
 		 */
 		public function __construct( $file = '' ) {
 
@@ -76,6 +78,8 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		 * Enqueue quick-edit JS
 		 *
 		 * @since 0.1.0
+		 *
+		 * @return void
 		 */
 		public function enqueue_scripts() {
 
@@ -109,6 +113,8 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		 * Add help tabs for `image` column
 		 *
 		 * @since 0.1.2
+		 *
+		 * @return void
 		 */
 		public function help_tabs() {
 			get_current_screen()->add_help_tab(
@@ -125,7 +131,9 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		 *
 		 * @since 0.1.2
 		 *
-		 * @param string $meta
+		 * @param string|int $meta Attachment ID.
+		 *
+		 * @return void
 		 */
 		protected function format_output( $meta = '' ) {
 
@@ -133,10 +141,10 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 			add_filter( 'wp_get_attachment_image_attributes', array( $this, 'attachment_id_attr' ), 10, 2 );
 
 			// Output the image attachment
-			echo wp_get_attachment_image( $meta );
+			echo wp_get_attachment_image( (int) $meta );
 
 			// Remove our filter
-			remove_filter( 'wp_get_attachment_image_attributes', array( $this, 'attachment_id_attr' ), 10, 2 );
+			remove_filter( 'wp_get_attachment_image_attributes', array( $this, 'attachment_id_attr' ), 10 );
 		}
 
 		/**
@@ -144,12 +152,13 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		 *
 		 * @since 0.1.3
 		 *
-		 * @param array $attr
-		 * @param int   $attachment
-		 * @param int   $size
+		 * @param array<string, int|string> $attr       Image attributes.
+		 * @param WP_Post|int               $attachment Attachment post.
+		 *
+		 * @return array<string, int|string>
 		 */
 		public static function attachment_id_attr( $attr = array(), $attachment = 0 ) {
-			$attr['data-attachment-id'] = $attachment->ID;
+			$attr['data-attachment-id'] = $attachment instanceof WP_Post ? $attachment->ID : 0;
 			return $attr;
 		}
 
@@ -158,7 +167,9 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param  $term
+		 * @param WP_Term|false|string $term Term object, or an empty value.
+		 *
+		 * @return void
 		 */
 		protected function form_field( $term = '' ) {
 
@@ -176,10 +187,11 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 			);
 
 			// Get the meta value
-			$value = $this->get_meta( $term_id ); ?>
+			$value     = $this->get_meta( $term_id );
+			$image_url = wp_get_attachment_image_url( (int) $value, 'full' ); ?>
 
 		<div>
-			<img id="wp-term-images-photo" src="<?php echo esc_url( wp_get_attachment_image_url( $value, 'full' ) ); ?>"
+			<img id="wp-term-images-photo" src="<?php echo esc_url( false !== $image_url ? $image_url : '' ); ?>"
 			<?php
 			if ( empty( $value ) ) :
 				?>
@@ -207,7 +219,7 @@ if ( ! class_exists( 'WP_Term_Images' ) ) :
 		 *
 		 * @since 0.1.0
 		 *
-		 * @param  $term
+		 * @return void
 		 */
 		protected function quick_edit_form_field() {
 			?>

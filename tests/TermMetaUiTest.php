@@ -2,6 +2,8 @@
 
 use PHPUnit\Framework\TestCase;
 
+require_once dirname( __DIR__ ) . '/includes/class-wp-term-images.php';
+
 function wp_verify_nonce() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
 function wp_unslash( $value ) { return $value; }
 function sanitize_text_field( $value ) { return $value; }
@@ -142,6 +144,39 @@ final class TermMetaUiTest extends TestCase {
 		$this->assertSame( " AND tm.meta_key = 'image'", $actual['where'] );
 		$this->assertSame( 'ORDER BY tm.meta_value', $actual['orderby'] );
 		$this->assertSame( 't.* , tm.*', $actual['fields'] );
+	}
+
+	/** Confirm missing images render nothing and release the attribute filter. */
+	public function test_missing_image_renders_empty_output_and_removes_attribute_filter(): void {
+		$GLOBALS['wpti_test']['returns']['wp_get_attachment_image'] = false;
+
+		$reflection = new ReflectionClass( WP_Term_Images::class );
+
+		$images = $reflection->newInstanceWithoutConstructor();
+
+		$method = new ReflectionMethod( WP_Term_Images::class, 'format_output' );
+		if ( PHP_VERSION_ID < 80100 ) {
+			$method->setAccessible( true );
+		}
+
+		ob_start();
+		$method->invoke( $images, 42 );
+		$output = ob_get_clean();
+
+		$this->assertSame( '', $output );
+		$this->assertSame( 'wp_get_attachment_image_attributes', $GLOBALS['wpti_test']['calls']['add_filter'][0][0] );
+		$this->assertSame( 'wp_get_attachment_image_attributes', $GLOBALS['wpti_test']['calls']['remove_filter'][0][0] );
+	}
+
+	/** Confirm non-post attachment values cannot become a data attribute. */
+	public function test_attachment_attribute_uses_zero_for_non_post_values(): void {
+		$this->assertSame(
+			array(
+				'class'              => 'thumbnail',
+				'data-attachment-id' => 0,
+			),
+			WP_Term_Images::attachment_id_attr( array( 'class' => 'thumbnail' ), 42 )
+		);
 	}
 
 	private function clauses(): array {
