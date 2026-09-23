@@ -16,6 +16,20 @@ function delete_term_meta() { return wpti_test_call( __FUNCTION__, func_get_args
 function update_term_meta() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
 function clean_term_cache() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
 function register_meta() { return wpti_test_call( __FUNCTION__, func_get_args() ); }
+/** Record an image-attribute filter registration. */
+function add_filter() {
+	return wpti_test_call( __FUNCTION__, func_get_args() );
+}
+
+/** Record an image-attribute filter removal. */
+function remove_filter() {
+	return wpti_test_call( __FUNCTION__, func_get_args() );
+}
+
+/** Return the attachment-image fixture. */
+function wp_get_attachment_image() {
+	return wpti_test_call( __FUNCTION__, func_get_args() );
+}
 function wp_parse_args( $args, $defaults ) { return array_merge( $defaults, $args ); }
 function get_taxonomies() {
 	wpti_test_call( __FUNCTION__, func_get_args() );
